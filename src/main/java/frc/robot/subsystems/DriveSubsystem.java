@@ -70,6 +70,9 @@ public class DriveSubsystem extends SubsystemBase {
         m_navX.reset();
         m_initalized = true;
     }
+    public void zeroHeading() {
+    m_navX.reset();
+  }
 
     private void resetSteeringMotorsToAbsolute()
     {
