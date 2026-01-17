@@ -69,6 +69,9 @@ public class RobotContainer {
 
     m_driverController.y().onTrue(new InstantCommand(() -> fieldRelative = false));
      m_driverController.x().onTrue(new InstantCommand(() -> fieldRelative = true));
+
+     m_driverController.rightBumper().whileTrue(new InstantCommand(() -> m_speedMultiplier = 0.5));
+     m_driverController.rightBumper().whileFalse(new InstantCommand(() -> m_speedMultiplier = 1.0));
   }
 
   /**
