@@ -1,11 +1,10 @@
 package frc.robot.commands;
-import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeCommand extends Command {
    private IntakeSubsystem m_intake;
-   private double m_speed=10.0;
+   private double m_speed=1.0;
    public IntakeCommand(IntakeSubsystem intake){
     addRequirements(intake);
     m_intake = intake;

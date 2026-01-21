@@ -12,11 +12,13 @@ import frc.robot.cwtech.Conditioning;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShootingSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ShootingCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,6 +35,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
+  private final ShootingSubsystem m_ShootingSubsystem = new ShootingSubsystem();
 
   private final Robot m_robot;
 
@@ -78,6 +81,7 @@ public class RobotContainer {
      m_driverController.rightBumper().whileTrue(new InstantCommand(() -> m_speedMultiplier = 0.5));
      m_driverController.rightBumper().whileFalse(new InstantCommand(() -> m_speedMultiplier = 1.0));
      m_subDriverController.a().whileTrue(new IntakeCommand(m_IntakeSubsystem));
+     m_subDriverController.b().whileTrue(new ShootingCommand(m_ShootingSubsystem));
   }
 
   /**
