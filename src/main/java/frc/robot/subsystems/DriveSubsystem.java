@@ -4,8 +4,11 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.Supplier;
+
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
+import com.studica.frc.AHRS.NavXUpdateRate;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -30,6 +33,8 @@ public class DriveSubsystem extends SubsystemBase {
     private SwerveDriveKinematics m_kinematics;
     private SwerveDriveOdometry m_odometry;
 
+    private double m_Goffset = 0.0;
+
     public static final double kMaxSpeedMetersPerSecond = 4;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;// kMaxSpeedMetersPerSecond /
                                                                           // Math.hypot(0.381, 0.381);
@@ -39,7 +44,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final Translation2d kBackLeftLocation = new Translation2d(-kHalfTrackWidthMeters, kHalfTrackWidthMeters);
     private final Translation2d kBackRightLocation = new Translation2d(-kHalfTrackWidthMeters, -kHalfTrackWidthMeters);
 
-    private int m_ticks = 0;
+    public int m_ticks = 0;
 
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem()
@@ -71,6 +76,7 @@ public class DriveSubsystem extends SubsystemBase {
         m_initalized = true;
     }
     public void zeroHeading() {
+    m_Goffset = (m_Goffset + getAngle().getDegrees())%360;
     m_navX.reset();
   }
 
@@ -82,15 +88,17 @@ public class DriveSubsystem extends SubsystemBase {
         m_backRight.resetAngleEncoderToAbsolute();
     }
 
+    
     @Override
     public void periodic() {
-        m_odometry.update(getAngle(), getPositions());
 
         m_ticks++;
         if (m_ticks % 15 != 7)
             return;
 
         SmartDashboard.putNumber(getName() + "/Angle", getAngle().getDegrees());
+        SmartDashboard.putNumber(getName() + "/Goffset", m_Goffset);
+        SmartDashboard.putNumber(getName() + "/Angle + Goffset", getAngle().getDegrees() + m_Goffset);
         // SmartDashboard.putNumber(getName() + "/Roll", m_navX.getRoll());
         // SmartDashboard.putNumber(getName() + "/Pitch", m_navX.getPitch());
         
@@ -168,7 +176,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Rotation2d getAngle() {
-        return m_navX.getRotation2d();
+        return m_navX.getRotation2d().unaryMinus();
     }
 
     public void resetOdometry(Pose2d pose) {
