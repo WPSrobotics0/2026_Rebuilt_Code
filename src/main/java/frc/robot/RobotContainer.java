@@ -37,7 +37,9 @@ public class RobotContainer {
   private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
   private final ShootingSubsystem m_ShootingSubsystem = new ShootingSubsystem();
 
+  public boolean fieldRelative = true;
   private final Robot m_robot;
+  private TeleOpDriveCommand m_TeleOpDriveCommand;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final static CommandXboxController m_driverController = new CommandXboxController(
@@ -47,6 +49,9 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer(Robot robot) {
     m_robot = robot;
+     m_TeleOpDriveCommand=new TeleOpDriveCommand(m_DriveSubsystem,
+      () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
+       () -> m_robot.isTeleopEnabled(),()->fieldRelative);
     // Configure the trigger bindings
     configureBindings();
   }
@@ -60,7 +65,7 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-   boolean fieldRelative = true;
+  
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
@@ -71,15 +76,14 @@ public class RobotContainer {
     m_driverController.start().onTrue(new
       InstantCommand(()->m_DriveSubsystem.zeroHeading()));
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    m_DriveSubsystem.setDefaultCommand(new TeleOpDriveCommand(m_DriveSubsystem,
-      () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
-       () -> m_robot.isTeleopEnabled(),()->fieldRelative));
+    m_DriveSubsystem.setDefaultCommand(m_TeleOpDriveCommand);
 
     m_driverController.y().onTrue(new InstantCommand(() -> fieldRelative = false));
      m_driverController.x().onTrue(new InstantCommand(() -> fieldRelative = true));
-
+    m_driverController.leftBumper().onTrue(new InstantCommand(() ->m_TeleOpDriveCommand.flipBump()));
      m_driverController.rightBumper().whileTrue(new InstantCommand(() -> m_speedMultiplier = 0.5));
      m_driverController.rightBumper().whileFalse(new InstantCommand(() -> m_speedMultiplier = 1.0));
+     m_driverController.back().onTrue(new InstantCommand(() -> m_DriveSubsystem.stopAndLockWheels()));
      m_subDriverController.a().whileTrue(new IntakeCommand(m_IntakeSubsystem));
      m_subDriverController.b().whileTrue(new ShootingCommand(m_ShootingSubsystem));
   }
