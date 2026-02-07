@@ -49,14 +49,14 @@ public class DriveSubsystem extends SubsystemBase {
         m_kinematics = new SwerveDriveKinematics(kFrontLeftLocation, kFrontRightLocation, kBackLeftLocation,
                 kBackRightLocation);
 
-        m_frontLeft = new SwerveModuleCanCoder(1, 22,
-                182.5, "Front Left");
-        m_frontRight = new SwerveModuleCanCoder(2, 21,
-                305, "Front Right");
+        m_frontLeft = new SwerveModuleCanCoder(1, 21,
+                135.65, "Front Left");
+        m_frontRight = new SwerveModuleCanCoder(2, 22,
+                87.95, "Front Right");
         m_backLeft = new SwerveModuleCanCoder(3,23,
-                181, "Back Left");
+                106.85, "Back Left");
         m_backRight = new SwerveModuleCanCoder(4, 24,
-                183, "Back Right");
+                158.25, "Back Right");
 
         m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle(), getPositions());
 
@@ -168,7 +168,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Rotation2d getAngle() {
-        return m_navX.getRotation2d();
+        return m_navX.getRotation2d().unaryMinus();
     }
 
     public void resetOdometry(Pose2d pose) {

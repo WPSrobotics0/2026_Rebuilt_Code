@@ -34,9 +34,9 @@ public final class Constants {
     public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
 
     // Chassis configuration
-    public static final double kTrackWidth = Units.inchesToMeters(27.5);
+    public static final double kTrackWidth = Units.inchesToMeters(16.1);
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = Units.inchesToMeters(21.5);
+    public static final double kWheelBase = Units.inchesToMeters(16.1);
     
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
@@ -54,27 +54,28 @@ public final class Constants {
 
     // SPARK MAX CAN IDs
     public static final int kFrontLeftDrivingCanId = 1;
-    public static final int kRearLeftDrivingCanId = 4;
+    public static final int kRearLeftDrivingCanId = 3;
     public static final int kFrontRightDrivingCanId = 2;
-    public static final int kRearRightDrivingCanId = 3;
+    public static final int kRearRightDrivingCanId = 4;
 
     public static final int kFrontLeftTurningCanId = 11;
-    public static final int kRearLeftTurningCanId = 14;
+    public static final int kRearLeftTurningCanId = 13;
     public static final int kFrontRightTurningCanId = 12;
-    public static final int kRearRightTurningCanId = 13;
+    public static final int kRearRightTurningCanId = 14;
 
     public static final boolean kGyroReversed = false;
   }
   public static final class SubsystemConstants {
 
-    public static final int kLeftCoralCanId = 15;
-    public static final int kLeftAlgaeCanId = 22;
-    public static final int kRightCoralCanId = 16;
-    public static final int kRightAlgaeCanId = 23;
-    public static final int kAlgaeLiftCanId =25;
+    /*public static final int kLeftCoralCanId = 5;
+    public static final int kLeftAlgaeCanId = 6;
+    public static final int kRightCoralCanId = 7;
+    public static final int kRightAlgaeCanId = 8;
+    public static final int kAlgaeLiftCanId =9;
 
     public static final int kClimbMotor1CanId = 31;
     public static final int kClimbMotor2CanId = 32;
+    */
   }
 
   public static final class ModuleConstants {
