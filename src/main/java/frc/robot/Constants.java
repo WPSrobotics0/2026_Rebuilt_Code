@@ -67,15 +67,6 @@ public final class Constants {
   }
   public static final class SubsystemConstants {
 
-<<<<<<< HEAD
-    public static final int kIntake1CanId = 0;
-    public static final int kIntake2CanId = 0;
-    public static final int kSpindexerCanId = 0;
-    public static final int kTransportCanId = 0;
-    public static final int kShooterCanId = 0;
-    public static final int kLeftClimbCandId = 0;
-    public static final int kRightClimbCanId = 0;
-=======
     /*public static final int kLeftCoralCanId = 5;
     public static final int kLeftAlgaeCanId = 6;
     public static final int kRightCoralCanId = 7;
@@ -85,7 +76,7 @@ public final class Constants {
     public static final int kClimbMotor1CanId = 31;
     public static final int kClimbMotor2CanId = 32;
     */
->>>>>>> 8c09a8189a6ae898d4b3c34a6311a49a6da40121
+
   }
 
   public static final class ModuleConstants {

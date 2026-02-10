@@ -14,12 +14,10 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
-<<<<<<< HEAD
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-=======
 import edu.wpi.first.wpilibj.XboxController;
->>>>>>> 8c09a8189a6ae898d4b3c34a6311a49a6da40121
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -59,14 +57,14 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer(Robot robot) {
     m_robot = robot;
-<<<<<<< HEAD
+
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
-=======
+
      m_TeleOpDriveCommand=new TeleOpDriveCommand(m_DriveSubsystem,
       () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
        () -> m_robot.isTeleopEnabled(),()->fieldRelative);
->>>>>>> 8c09a8189a6ae898d4b3c34a6311a49a6da40121
+
     // Configure the trigger bindings
     configureBindings();
   }
