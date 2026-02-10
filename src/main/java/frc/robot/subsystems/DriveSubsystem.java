@@ -83,6 +83,7 @@ public class DriveSubsystem extends SubsystemBase {
               // This will flip the path being followed to the red side of the field.
               // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
+<<<<<<< HEAD
               var alliance = DriverStation.getAlliance();
               if (alliance.isPresent()) {
                 return alliance.get() == DriverStation.Alliance.Red;
@@ -94,6 +95,23 @@ public class DriveSubsystem extends SubsystemBase {
     } catch (Exception e) {
       // Handle exception as needed
       e.printStackTrace();
+=======
+        m_kinematics = new SwerveDriveKinematics(kFrontLeftLocation, kFrontRightLocation, kBackLeftLocation,
+                kBackRightLocation);
+
+        m_frontLeft = new SwerveModuleCanCoder(1, 21,
+                135.65, "Front Left");
+        m_frontRight = new SwerveModuleCanCoder(2, 22,
+                87.95, "Front Right");
+        m_backLeft = new SwerveModuleCanCoder(3,23,
+                106.85, "Back Left");
+        m_backRight = new SwerveModuleCanCoder(4, 24,
+                158.25, "Back Right");
+
+        m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle(), getPositions());
+
+        smartDashboardInit();
+>>>>>>> 8c09a8189a6ae898d4b3c34a6311a49a6da40121
     }
         smartDashboardInit();
     }public ChassisSpeeds getRobotRelativeSpeeds()
@@ -237,10 +255,10 @@ public void resetPose(Pose2d pose) {
     }
 
     public void stopAndLockWheels() {
-        m_frontLeft.lockWheelAtAngleInDegrees(45);
+        m_frontLeft.lockWheelAtAngleInDegrees(-45);
         m_frontRight.lockWheelAtAngleInDegrees(-45);
         m_backLeft.lockWheelAtAngleInDegrees(-45);
-        m_backRight.lockWheelAtAngleInDegrees(45);
+        m_backRight.lockWheelAtAngleInDegrees(-45);
     }
 
     public void checkRelativeEncoderToAbsoluteEncoder()

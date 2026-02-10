@@ -8,16 +8,22 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.TeleOpDriveCommand;
+import frc.robot.commands.alignDistanceWithTagCommand;
 import frc.robot.cwtech.Conditioning;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+=======
+import edu.wpi.first.wpilibj.XboxController;
+>>>>>>> 8c09a8189a6ae898d4b3c34a6311a49a6da40121
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootingCommand;
@@ -41,7 +47,9 @@ public class RobotContainer {
   private final ShootingSubsystem m_ShootingSubsystem = new ShootingSubsystem();
   private final SendableChooser<Command> autoChooser;
 
+  public boolean fieldRelative = true;
   private final Robot m_robot;
+  private TeleOpDriveCommand m_TeleOpDriveCommand;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final static CommandXboxController m_driverController = new CommandXboxController(
@@ -51,8 +59,14 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer(Robot robot) {
     m_robot = robot;
+<<<<<<< HEAD
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
+=======
+     m_TeleOpDriveCommand=new TeleOpDriveCommand(m_DriveSubsystem,
+      () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
+       () -> m_robot.isTeleopEnabled(),()->fieldRelative);
+>>>>>>> 8c09a8189a6ae898d4b3c34a6311a49a6da40121
     // Configure the trigger bindings
     configureBindings();
   }
@@ -66,7 +80,7 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-   boolean fieldRelative = true;
+  
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
@@ -77,15 +91,16 @@ public class RobotContainer {
     m_driverController.start().onTrue(new
       InstantCommand(()->m_DriveSubsystem.zeroHeading()));
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    m_DriveSubsystem.setDefaultCommand(new TeleOpDriveCommand(m_DriveSubsystem,
-      () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
-       () -> m_robot.isTeleopEnabled(),()->fieldRelative));
+    m_DriveSubsystem.setDefaultCommand(m_TeleOpDriveCommand);
+    m_driverController.a().onTrue(new alignDistanceWithTagCommand(m_DriveSubsystem
+    ));
 
     m_driverController.y().onTrue(new InstantCommand(() -> fieldRelative = false));
      m_driverController.x().onTrue(new InstantCommand(() -> fieldRelative = true));
-
+    m_driverController.leftBumper().onTrue(new InstantCommand(() ->m_TeleOpDriveCommand.flipBump()));
      m_driverController.rightBumper().whileTrue(new InstantCommand(() -> m_speedMultiplier = 0.5));
      m_driverController.rightBumper().whileFalse(new InstantCommand(() -> m_speedMultiplier = 1.0));
+     m_driverController.back().onTrue(new InstantCommand(() -> m_DriveSubsystem.stopAndLockWheels()));
      m_subDriverController.a().whileTrue(new IntakeCommand(m_IntakeSubsystem));
      m_subDriverController.b().whileTrue(new ShootingCommand(m_ShootingSubsystem));
   }
