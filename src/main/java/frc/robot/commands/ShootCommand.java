@@ -29,6 +29,8 @@ public class ShootCommand extends Command {
   private double kRotationKi = 0;
   private double kSpeedKd = 0;
   private double kRotationKd = 0;
+  
+  private double m_shootTargetSpeed = 0.0;
 
   private double m_driveRotTarget;
   private double m_driveForwardTarget;
@@ -132,6 +134,7 @@ public class ShootCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     m_driveSubsystem.drive(0, 0, 0, true);
+    m_shootTargetSpeed = 0.0;
   }
 
   // Returns true when the command should end.
