@@ -49,11 +49,6 @@ public class alignDistanceWithTagCommand extends Command {
 
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
     m_table = inst.getTable("ReefAlignment");
-
-   
-
-    
-
    
   }
 
