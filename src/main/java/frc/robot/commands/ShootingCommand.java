@@ -13,16 +13,16 @@ public class ShootingCommand extends Command {
     //only runs once
     @Override
     public void initialize() {
-        m_shooting.setShootingSpeed(()->m_speed);
+        //m_shooting.setShootingSpeed(()->m_speed);
     }
 //everyt time it is ran
     @Override
   public void execute() {
-    m_shooting.setShootingSpeed(()->m_speed);
+    //m_shooting.setShootingSpeed(()->m_speed);
   }
    @Override
   public void end(boolean interrupted) {
-    m_shooting.setShootingSpeed(()->0.0);
+    //m_shooting.Speed(()->0.0);
 }
    @Override
   public boolean isFinished() {

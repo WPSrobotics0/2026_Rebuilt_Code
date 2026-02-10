@@ -63,18 +63,17 @@ public final class Constants {
     public static final int kFrontRightTurningCanId = 12;
     public static final int kRearRightTurningCanId = 13;
 
-    public static final boolean kGyroReversed = false;
+    public static final boolean kGyroReversed = true;
   }
   public static final class SubsystemConstants {
 
-    public static final int kLeftCoralCanId = 15;
-    public static final int kLeftAlgaeCanId = 22;
-    public static final int kRightCoralCanId = 16;
-    public static final int kRightAlgaeCanId = 23;
-    public static final int kAlgaeLiftCanId =25;
-
-    public static final int kClimbMotor1CanId = 31;
-    public static final int kClimbMotor2CanId = 32;
+    public static final int kIntake1CanId = 0;
+    public static final int kIntake2CanId = 0;
+    public static final int kSpindexerCanId = 0;
+    public static final int kTransportCanId = 0;
+    public static final int kShooterCanId = 0;
+    public static final int kLeftClimbCandId = 0;
+    public static final int kRightClimbCanId = 0;
   }
 
   public static final class ModuleConstants {

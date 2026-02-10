@@ -4,12 +4,18 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.Supplier;
-
+//import java.util.function.Supplier;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
-import com.studica.frc.AHRS.NavXUpdateRate;
+//import com.studica.frc.AHRS.NavXUpdateRate;
 
+import edu.wpi.first.hal.FRCNetComm.tInstances;
+import edu.wpi.first.hal.FRCNetComm.tResourceType;
+import edu.wpi.first.hal.HAL;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -18,20 +24,25 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
-    private SwerveModuleCanCoder m_frontLeft;
-    private SwerveModuleCanCoder m_frontRight;
-    private SwerveModuleCanCoder m_backLeft;
-    private SwerveModuleCanCoder m_backRight;
-    private AHRS m_navX;
+    private SwerveModuleCanCoder m_frontLeft= new SwerveModuleCanCoder(1, 22,
+                182.5, "Front Left");
+    private SwerveModuleCanCoder m_frontRight= new SwerveModuleCanCoder(2, 21,
+                305, "Front Right");
+    private SwerveModuleCanCoder m_backLeft = new SwerveModuleCanCoder(3,23,
+                181, "Back Left");
+    private SwerveModuleCanCoder m_backRight = new SwerveModuleCanCoder(4, 24,
+                183, "Back Right");
+    private AHRS m_navX = new AHRS(NavXComType.kMXP_SPI);
 
     private boolean m_initalized = false;
 
-    private SwerveDriveKinematics m_kinematics;
-    private SwerveDriveOdometry m_odometry;
+   
 
     private double m_Goffset = 0.0;
 
@@ -43,31 +54,67 @@ public class DriveSubsystem extends SubsystemBase {
     private final Translation2d kFrontRightLocation = new Translation2d(kHalfTrackWidthMeters, -kHalfTrackWidthMeters);
     private final Translation2d kBackLeftLocation = new Translation2d(-kHalfTrackWidthMeters, kHalfTrackWidthMeters);
     private final Translation2d kBackRightLocation = new Translation2d(-kHalfTrackWidthMeters, -kHalfTrackWidthMeters);
+ private SwerveDriveKinematics m_kinematics= new SwerveDriveKinematics(kFrontLeftLocation, kFrontRightLocation, kBackLeftLocation,
+                kBackRightLocation);
+    private SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle(), getPositions());
 
     public int m_ticks = 0;
 
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem()
-    {
-        m_navX = new AHRS(NavXComType.kMXP_SPI);
+    { HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
+    RobotConfig config;
+    try{
+      config = RobotConfig.fromGUISettings();
+    
+     // Configure AutoBuilder last
+    AutoBuilder.configure(
+            this::getPose, // Robot pose supplier
+            this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+            this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            ),
+            config, // The robot configuration
+            () -> {
+              // Boolean supplier that controls when the path will be mirrored for the red alliance
+              // This will flip the path being followed to the red side of the field.
+              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-        m_kinematics = new SwerveDriveKinematics(kFrontLeftLocation, kFrontRightLocation, kBackLeftLocation,
-                kBackRightLocation);
-
-        m_frontLeft = new SwerveModuleCanCoder(1, 22,
-                182.5, "Front Left");
-        m_frontRight = new SwerveModuleCanCoder(2, 21,
-                305, "Front Right");
-        m_backLeft = new SwerveModuleCanCoder(3,23,
-                181, "Back Left");
-        m_backRight = new SwerveModuleCanCoder(4, 24,
-                183, "Back Right");
-
-        m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle(), getPositions());
-
-        smartDashboardInit();
+              var alliance = DriverStation.getAlliance();
+              if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+              }
+              return false;
+            },
+            this // Reference to this subsystem to set requirements
+    );
+    } catch (Exception e) {
+      // Handle exception as needed
+      e.printStackTrace();
     }
-
+        smartDashboardInit();
+    }public ChassisSpeeds getRobotRelativeSpeeds()
+    {
+        return DriveConstants.kDriveKinematics.toChassisSpeeds(
+            m_frontLeft.getSwerveModuleState(),
+            m_frontRight.getSwerveModuleState(),
+            m_backLeft.getSwerveModuleState(),
+            m_backRight.getSwerveModuleState());
+    }
+public void resetPose(Pose2d pose) {
+    m_odometry.resetPosition(
+        Rotation2d.fromDegrees(m_navX.getAngle()),
+        new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_backLeft.getPosition(),
+            m_backRight.getPosition()
+        },
+        pose);
+  }
     public void initalize() {
         if (m_initalized)
             return;
@@ -125,7 +172,7 @@ public class DriveSubsystem extends SubsystemBase {
         m_backRight.smartDashboardUpdate();
     }
 
-    private void driveBotRelative(ChassisSpeeds chassisSpeeds)
+    private void driveRobotRelative(ChassisSpeeds chassisSpeeds)
     {
         drive(m_kinematics.toSwerveModuleStates(chassisSpeeds));
     }
