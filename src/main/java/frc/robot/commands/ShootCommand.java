@@ -21,6 +21,9 @@ public class ShootCommand extends Command {
   private double kSpeedKp = 0.125;
   private double kSpeedKi = 0;
   private double kSpeedKd = 0;
+  private double kRotationKd = 0;
+  
+  private double m_shootTargetSpeed = 0.0;
 
   private double m_driveForwardTarget;
   PIDController m_xSpeedController = new PIDController(kSpeedKp, kSpeedKi, kSpeedKd);
@@ -93,7 +96,7 @@ public class ShootCommand extends Command {
   public void end(boolean interrupted) {
     
       m_turretSubsystem.setIntakeSpeed(()->0.0);
-    //m_turretSubsystem.drive(0, 0, 0, true);
+    m_shootTargetSpeed = 0.0;
   }
 
   // Returns true when the command should end.
