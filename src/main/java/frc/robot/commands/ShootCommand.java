@@ -4,51 +4,40 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.networktables.BooleanPublisher;
-import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightHelpers;
+import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.math.controller.PIDController;
 public class ShootCommand extends Command {
 
 
-  private DriveSubsystem m_driveSubsystem;
+  private TurretSubsystem m_turretSubsystem;
   private double m_targetZ; 
-  private double m_targetX;
-  private double m_targetRotation;
   private double m_tid;
-  private double m_Rotation;
   private double m_Forward;
   private double kSpeedKp = 0.125;
-  private double kRotationKp = 0.125;
   private double kSpeedKi = 0;
-  private double kRotationKi = 0;
   private double kSpeedKd = 0;
-  private double kRotationKd = 0;
 
-  private double m_driveRotTarget;
   private double m_driveForwardTarget;
-  PIDController m_rotationController = new PIDController(kRotationKp, kRotationKi, kRotationKd);
   PIDController m_xSpeedController = new PIDController(kSpeedKp, kSpeedKi, kSpeedKd);
-  PIDController m_zSpeedController = new PIDController(kSpeedKp, kSpeedKi, kSpeedKd);
 
   private boolean m_tidFound = false;
 
   
   private NetworkTable m_table;
 
-  public ShootCommand(DriveSubsystem driveSubsystem) {
+  public ShootCommand(TurretSubsystem turretSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_driveSubsystem = driveSubsystem;
+    m_turretSubsystem = turretSubsystem;
 
-    addRequirements(m_driveSubsystem);
+    addRequirements(m_turretSubsystem);
 
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    m_table = inst.getTable("ReefAlignment");
+    m_table = inst.getTable("Shoot");
    
   }
 
@@ -59,32 +48,16 @@ public class ShootCommand extends Command {
     double tid = LimelightHelpers.getFiducialID("limelight");
     m_tid=tid;
     
-    //change later to actual angle (tweak it)
-    m_targetRotation = 0;
-
-    m_tidFound = m_targetRotation >= 0;
-    if (m_tidFound == false)
-    {
-      return;
-    }
     //tweak on a per id basis, just a generic value for april tag
     m_targetZ =0;
 
     
 
     m_xSpeedController.setSetpoint(m_targetZ);
-    m_zSpeedController.setSetpoint(m_targetZ);
-    m_rotationController.setSetpoint(m_targetRotation);
-    m_Rotation=LimelightHelpers.getTX("limelight");
 
   }
 
-  private double rotate(){
-    double kP=.035;
-    m_Rotation=LimelightHelpers.getTX("limelight") *kP;
-
-    return m_rotationController.calculate(m_Rotation)*(Math.PI);
-  }
+  
   private double forward(){
     double kP=.1;
     m_Forward=LimelightHelpers.getTY("limelight") *kP;
@@ -101,37 +74,26 @@ public class ShootCommand extends Command {
     SmartDashboard.putNumber(" command tid", m_tid);
    
     if (m_tid!=-1 && m_tid!=0) {
-    
-
-     
-      //rotSpeed
-      m_driveRotTarget=rotate();
-     
-
       //FORWARD SPEED
       m_driveForwardTarget=forward(); 
 
       SmartDashboard.putBoolean("isValidId", true);
-      SmartDashboard.putNumber("rotError", Math.abs(m_targetRotation-m_driveRotTarget));
       SmartDashboard.putNumber("drivespeed", m_driveForwardTarget);
-
-      if(Math.abs(m_targetRotation-m_driveRotTarget )>0.05){
-          m_driveSubsystem.drive( 0, 0, m_driveRotTarget, false);
-      }
-      else{
-          m_driveSubsystem.drive(-1* m_driveForwardTarget, 0, 0, false);
-      }
+      m_turretSubsystem.setIntakeSpeed(()->1.0);
+      
     
     } else {
       SmartDashboard.putBoolean("isValidId", false);
       m_tidFound=false;
-      m_driveSubsystem.drive(0, 0, 0, true);
+      //m_turretSubsystem.drive(0, 0, 0, true);
     }
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_driveSubsystem.drive(0, 0, 0, true);
+    
+      m_turretSubsystem.setIntakeSpeed(()->0.0);
+    //m_turretSubsystem.drive(0, 0, 0, true);
   }
 
   // Returns true when the command should end.
