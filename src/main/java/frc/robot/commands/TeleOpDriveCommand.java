@@ -58,7 +58,7 @@ public class TeleOpDriveCommand extends Command {
             m_driveSubsystem.drive(m_xJoystickSupplier.get(), m_yJoystickSupplier.get(), m_turnJoystickSupplier.get(),
                         m_isFieldRelative.get());}
             else{
-                if((Math.abs(angle/45.0f)%2>0.90) || Math.abs(angle/45.0f)%2<0.80){
+                if((Math.abs(angle/45.0f)%2>0.95) || Math.abs(angle/45.0f)%2<0.85){
                      m_driveSubsystem.drive(m_xJoystickSupplier.get(), m_yJoystickSupplier.get(), 2*inversion,
                     m_isFieldRelative.get());
                     //ticks++;

@@ -8,14 +8,17 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.TeleOpDriveCommand;
+import frc.robot.commands.alignDistanceWithTagCommand;
 import frc.robot.cwtech.Conditioning;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootingCommand;
@@ -77,6 +80,8 @@ public class RobotContainer {
       InstantCommand(()->m_DriveSubsystem.zeroHeading()));
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     m_DriveSubsystem.setDefaultCommand(m_TeleOpDriveCommand);
+    m_driverController.a().onTrue(new alignDistanceWithTagCommand(m_DriveSubsystem
+    ));
 
     m_driverController.y().onTrue(new InstantCommand(() -> fieldRelative = false));
      m_driverController.x().onTrue(new InstantCommand(() -> fieldRelative = true));
