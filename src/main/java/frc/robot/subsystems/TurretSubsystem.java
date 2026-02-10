@@ -16,19 +16,22 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SubsystemConstants;
 
 public class TurretSubsystem  extends SubsystemBase {
-        private final SparkMax m_moter = new SparkMax(41, MotorType.kBrushless);
+    private final SparkMax m_moter = new SparkMax(41, MotorType.kBrushless);
+    private Supplier<Double> m_speed;
     //private final SparkMax m_IntakeMotorRight = new SparkMax(SubsystemConstants.kAlgaeLiftCanId, MotorType.kBrushless);
     public TurretSubsystem() {
         SparkMaxConfig moterConfig =new SparkMaxConfig();
         m_moter.configure(moterConfig, ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+        m_speed = () -> 0.0;
         //m_IntakeMotorRight.configure(liftConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
 
     }
     @Override
     public void periodic() {
-
+        SmartDashboard.putNumber("Shooter Speed", m_speed.get());
     }
     public void setIntakeSpeed(Supplier<Double> speed) {
+        m_speed = () -> speed.get();
         m_moter.set(speed.get());
         //m_IntakeMotorRight.set(-1*speed.get());
     }
