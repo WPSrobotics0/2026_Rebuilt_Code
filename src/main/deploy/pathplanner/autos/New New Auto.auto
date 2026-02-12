@@ -1,0 +1,61 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mobileaction1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mobileaction2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "pickup1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mobileaction3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mobileaction4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mobileaction5"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "mobileaction6"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

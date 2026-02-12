@@ -147,6 +147,7 @@ public class ShootCommand extends Command {
     m_shootTargetSpeed = ()->0.0;
       m_turretSubsystem.setIntakeSpeed(m_shootTargetSpeed.get());
     
+    m_turretSubsystem.setIntakeSpeed(()->0.0);
   }
 
   // Returns true when the command should end.
