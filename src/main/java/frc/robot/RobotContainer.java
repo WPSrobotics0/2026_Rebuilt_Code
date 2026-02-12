@@ -11,7 +11,9 @@ import frc.robot.cwtech.Conditioning;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShootingSubsystem;
+//import frc.robot.subsystems.ShootingSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.SpindexerSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,7 +26,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
-import frc.robot.commands.ShootingCommand;
+import frc.robot.commands.RotateTurretCommand;
+//import frc.robot.commands.ShootingCommand;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 /**
@@ -42,12 +45,15 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
-  private final ShootingSubsystem m_ShootingSubsystem = new ShootingSubsystem();
+  //private final ShootingSubsystem m_ShootingSubsystem = new ShootingSubsystem();
+  private final SpindexerSubsystem m_SpindexerSubsystem = new SpindexerSubsystem();
   private final SendableChooser<Command> autoChooser;
-  private final TurretSubsystem m_TurretSubsystem= new TurretSubsystem();
+  private final ShooterSubsystem m_ShooterSubsystem= new ShooterSubsystem();
+  private final TurretSubsystem m_TurretSubsystem = new TurretSubsystem();
   public boolean fieldRelative = true;
   private final Robot m_robot;
   private TeleOpDriveCommand m_TeleOpDriveCommand;
+  private RotateTurretCommand m_RotateTurretCommand;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final static CommandXboxController m_driverController = new CommandXboxController(
@@ -64,7 +70,7 @@ public class RobotContainer {
      m_TeleOpDriveCommand=new TeleOpDriveCommand(m_DriveSubsystem,
       () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
        () -> m_robot.isTeleopEnabled(),()->fieldRelative);
-
+    m_RotateTurretCommand = new RotateTurretCommand(m_TurretSubsystem, () -> m_subDriverController.getRightX());
     // Configure the trigger bindings
     configureBindings();
   }
@@ -89,18 +95,20 @@ public class RobotContainer {
       InstantCommand(()->m_DriveSubsystem.zeroHeading()));
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     m_DriveSubsystem.setDefaultCommand(m_TeleOpDriveCommand);
-    m_driverController.a().onTrue(new alignDistanceWithTagCommand(m_DriveSubsystem
-    ));
-
+    m_driverController.a().onTrue(new alignDistanceWithTagCommand(m_DriveSubsystem));
     m_driverController.y().onTrue(new InstantCommand(() -> fieldRelative = false));
      m_driverController.x().onTrue(new InstantCommand(() -> fieldRelative = true));
     m_driverController.leftBumper().onTrue(new InstantCommand(() ->m_TeleOpDriveCommand.flipBump()));
      m_driverController.rightBumper().whileTrue(new InstantCommand(() -> m_speedMultiplier = 0.5));
      m_driverController.rightBumper().whileFalse(new InstantCommand(() -> m_speedMultiplier = 1.0));
      m_driverController.back().onTrue(new InstantCommand(() -> m_DriveSubsystem.stopAndLockWheels()));
+
      m_subDriverController.a().whileTrue(new IntakeCommand(m_IntakeSubsystem));
-     m_subDriverController.b().whileTrue(new ShootingCommand(m_ShootingSubsystem));
-     m_subDriverController.rightTrigger().whileTrue(new ShootCommand(m_TurretSubsystem));
+     //m_subDriverController.b().whileTrue(new ShootingCommand(m_ShootingSubsystem));
+     m_subDriverController.rightTrigger().whileTrue(new ShootCommand(m_ShooterSubsystem));
+     m_subDriverController.b().whileTrue(new InstantCommand(() -> m_SpindexerSubsystem.Spin(0.5)));
+     m_subDriverController.b().whileFalse(new InstantCommand(() -> m_SpindexerSubsystem.Spin(0.0)));
+     m_TurretSubsystem.setDefaultCommand(m_RotateTurretCommand);
   }
 
   /**
