@@ -30,14 +30,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
-    private SwerveModuleCanCoder m_frontLeft= new SwerveModuleCanCoder(1, 22,
-                182.5, "Front Left");
-    private SwerveModuleCanCoder m_frontRight= new SwerveModuleCanCoder(2, 21,
-                305, "Front Right");
+    private SwerveModuleCanCoder m_frontLeft= new SwerveModuleCanCoder(1, 21,
+                135.65, "Front Left");
+    private SwerveModuleCanCoder m_frontRight= new SwerveModuleCanCoder(2, 22,
+                87.95, "Front Right");
     private SwerveModuleCanCoder m_backLeft = new SwerveModuleCanCoder(3,23,
-                181, "Back Left");
+                106.85, "Back Left");
     private SwerveModuleCanCoder m_backRight = new SwerveModuleCanCoder(4, 24,
-                183, "Back Right");
+                158.25, "Back Right");
     private AHRS m_navX = new AHRS(NavXComType.kMXP_SPI);
 
     private boolean m_initalized = false;

@@ -18,7 +18,7 @@ public class TeleOpDriveCommand extends Command {
     private Supplier<Boolean> m_isTeleopEnabled;
     private Supplier<Boolean> m_isFieldRelative;
     public Supplier<Boolean> m_isBump;
-    private int ticks;
+    //private int ticks;
     private int inversion;
     private boolean isInversion;
 
@@ -33,7 +33,7 @@ public class TeleOpDriveCommand extends Command {
         m_turnJoystickSupplier = turnJoystick;
         m_isTeleopEnabled = isTeleopEnabled;
         m_isFieldRelative=isFieldRelative;
-        ticks=0;
+        //ticks=0;
         m_isBump=()->false;
         inversion = 1;
         isInversion = false;
