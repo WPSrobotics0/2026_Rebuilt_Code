@@ -95,7 +95,7 @@ public class ShootCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     
-      m_turretSubsystem.setIntakeSpeed(()->0.0);
+    m_turretSubsystem.setIntakeSpeed(()->0.0);
     m_shootTargetSpeed = 0.0;
   }
 

@@ -1,0 +1,55 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shooting 1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "movement 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": " movement 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ball pick up"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shooting 2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

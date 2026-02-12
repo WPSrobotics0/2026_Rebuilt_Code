@@ -1,0 +1,61 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "movement1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "collection1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "movement3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "movement4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shoot1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "movement5"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "movement6"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
