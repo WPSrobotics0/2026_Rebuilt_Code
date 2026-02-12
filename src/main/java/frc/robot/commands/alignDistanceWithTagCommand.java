@@ -4,10 +4,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.networktables.BooleanPublisher;
-import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
+//import edu.wpi.first.networktables.BooleanPublisher;
+//import edu.wpi.first.networktables.DoublePublisher;
+//import edu.wpi.first.networktables.NetworkTable;
+//import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
@@ -18,7 +18,7 @@ public class alignDistanceWithTagCommand extends Command {
 
   private DriveSubsystem m_driveSubsystem;
   private double m_targetZ; 
-  private double m_targetX;
+  //private double m_targetX;
   private double m_targetRotation;
   private double m_tid;
   private double m_Rotation;
@@ -39,7 +39,7 @@ public class alignDistanceWithTagCommand extends Command {
   private boolean m_tidFound = false;
 
   
-  private NetworkTable m_table;
+  // private NetworkTable m_table;
 
   public alignDistanceWithTagCommand(DriveSubsystem driveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -47,15 +47,15 @@ public class alignDistanceWithTagCommand extends Command {
 
     addRequirements(m_driveSubsystem);
 
-        NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    m_table = inst.getTable("ReefAlignment");
+    //NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    //m_table = inst.getTable("ReefAlignment");
    
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_table=NetworkTableInstance.getDefault().getTable("limelight");
+    //m_table=NetworkTableInstance.getDefault().getTable("limelight");
     double tid = LimelightHelpers.getFiducialID("limelight");
     m_tid=tid;
     

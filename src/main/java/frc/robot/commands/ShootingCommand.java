@@ -3,11 +3,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShootingSubsystem;
 public class ShootingCommand extends Command {
-   private ShootingSubsystem m_shooting;
-   private double m_speed=1.0;
+   //private ShootingSubsystem m_shooting;
+   //private double m_speed=1.0;
    public ShootingCommand(ShootingSubsystem shooting){
     addRequirements(shooting);
-    m_shooting = shooting;
+    //m_shooting = shooting;
     
    }
     //only runs once
