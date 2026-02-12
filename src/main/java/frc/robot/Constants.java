@@ -67,9 +67,11 @@ public final class Constants {
   }
   public static final class SubsystemConstants {
 
-    /*public static final int kLeftCoralCanId = 5;
-    public static final int kLeftAlgaeCanId = 6;
-    public static final int kRightCoralCanId = 7;
+    public static final int kSpindexerId = 5;
+    public static final int kTurretId = 6;
+    public static final int kShooterId = 41;
+
+    /*public static final int kRightCoralCanId = 7;
     public static final int kRightAlgaeCanId = 8;
     public static final int kAlgaeLiftCanId =9;
 

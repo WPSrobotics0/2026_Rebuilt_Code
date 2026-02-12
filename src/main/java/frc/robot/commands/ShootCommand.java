@@ -9,7 +9,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LimelightHelpers;
-import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 import java.util.function.Supplier;
 
@@ -17,7 +17,7 @@ import edu.wpi.first.math.controller.PIDController;
 public class ShootCommand extends Command {
 
 
-  private TurretSubsystem m_turretSubsystem;
+  private ShooterSubsystem m_turretSubsystem;
   private double m_targetZ; 
   private double m_tid;
   private double m_Forward;
@@ -36,7 +36,7 @@ public class ShootCommand extends Command {
   
   //private NetworkTable m_table;
 
-  public ShootCommand(TurretSubsystem turretSubsystem) {
+  public ShootCommand(ShooterSubsystem turretSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_turretSubsystem = turretSubsystem;
 
@@ -132,7 +132,7 @@ public class ShootCommand extends Command {
       double ballVelocity = calcSpeed(calcDist());
       m_shootTargetSpeed =()->calcMotorVolts(ballVelocity);
       SmartDashboard.putNumber("target turret speed", m_shootTargetSpeed.get());
-      m_turretSubsystem.setIntakeSpeed(m_shootTargetSpeed);
+      m_turretSubsystem.setIntakeSpeed(m_shootTargetSpeed.get());
       
     
     } else {
@@ -145,7 +145,7 @@ public class ShootCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     m_shootTargetSpeed = ()->0.0;
-      m_turretSubsystem.setIntakeSpeed(m_shootTargetSpeed);
+      m_turretSubsystem.setIntakeSpeed(m_shootTargetSpeed.get());
     
     m_turretSubsystem.setIntakeSpeed(()->0.0);
   }
@@ -153,6 +153,6 @@ public class ShootCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_tidFound == false;
+    return false;
   }
 }
