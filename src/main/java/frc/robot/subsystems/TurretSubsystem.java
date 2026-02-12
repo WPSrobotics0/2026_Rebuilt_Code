@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class TurretSubsystem  extends SubsystemBase {
-    private final SparkMax m_moter = new SparkMax(41, MotorType.kBrushless);
+    private final SparkMax m_moter = new SparkMax(41, SparkMax.MotorType.kBrushless);
     private Supplier<Double> m_speed;
     //private final SparkMax m_IntakeMotorRight = new SparkMax(SubsystemConstants.kAlgaeLiftCanId, MotorType.kBrushless);
     public TurretSubsystem() {
