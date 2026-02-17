@@ -11,11 +11,11 @@ import java.util.function.Supplier;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.robot.Constants.SubsystemConstants;
 
-public class IntakeSubsystem  extends SubsystemBase {
+public class ElevatorSubsystem  extends SubsystemBase {
 
-    private final SparkMax m_IntakeMotorLeft = new SparkMax(50, MotorType.kBrushless);
+    private final SparkMax m_IntakeMotorLeft = new SparkMax(55, MotorType.kBrushless);
     //private final SparkMax m_IntakeMotorRight = new SparkMax(SubsystemConstants.kAlgaeLiftCanId, MotorType.kBrushless);
-    public IntakeSubsystem() {
+    public ElevatorSubsystem() {
         SparkMaxConfig liftConfig =new SparkMaxConfig();
         m_IntakeMotorLeft.configure(liftConfig, ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
         //m_IntakeMotorRight.configure(liftConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
@@ -25,8 +25,8 @@ public class IntakeSubsystem  extends SubsystemBase {
     public void periodic() {
 
     }
-    public void setIntakeSpeed(Supplier<Double> speed) {
-        m_IntakeMotorLeft.set(speed.get());
+    public void setIntakeSpeed(double speed) {
+        m_IntakeMotorLeft.set(speed);
         //m_IntakeMotorRight.set(-1*speed.get());
     }
 }

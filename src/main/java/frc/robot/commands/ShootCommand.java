@@ -8,8 +8,10 @@ package frc.robot.commands;
 //import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.LimelightHelpers;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.SpindexerSubsystem;
 
 //import static edu.wpi.first.units.Units.Volt;
 
@@ -20,12 +22,15 @@ public class ShootCommand extends Command {
 
 
   private ShooterSubsystem m_shooterSubsystem;
+  private ElevatorSubsystem m_ElevatorSubsystem;
+  private SpindexerSubsystem m_SpindexerSubsystem;
   private double m_targetZ; 
   private double m_tid;
   private double m_Forward;
   private double kSpeedKp = 0.125;
   private double kSpeedKi = 0;
   private double kSpeedKd = 0;
+  private int ticks;
   //private double kRotationKd = 0;
   
   private Supplier<Double> m_shootTargetSpeed;
@@ -38,13 +43,14 @@ public class ShootCommand extends Command {
   
   //private NetworkTable m_table;
 
-  public ShootCommand(ShooterSubsystem shooterSubsystem) {
+  public ShootCommand(ShooterSubsystem shooterSubsystem, ElevatorSubsystem elevatorSubsystem, SpindexerSubsystem spindexerSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooterSubsystem = shooterSubsystem;
+    m_ElevatorSubsystem=elevatorSubsystem;
+    m_SpindexerSubsystem=spindexerSubsystem;
+    addRequirements(m_shooterSubsystem, m_ElevatorSubsystem, m_SpindexerSubsystem);
 
-    addRequirements(m_shooterSubsystem);
-
-        //NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    //NetworkTableInstance inst = NetworkTableInstance.getDefault();
     //m_table = inst.getTable("Shoot");
    
   }
@@ -55,7 +61,7 @@ public class ShootCommand extends Command {
     //m_table=NetworkTableInstance.getDefault().getTable("limelight");
     double tid = LimelightHelpers.getFiducialID("limelight");
     m_tid=tid;
-    
+    ticks =0;
     //tweak on a per id basis, just a generic value for april tag
     m_targetZ =0;
 
@@ -142,7 +148,13 @@ public class ShootCommand extends Command {
       SmartDashboard.putNumber("target turret speed", m_shootTargetSpeed.get());
       m_shooterSubsystem.setIntakeSpeed(m_shootTargetSpeed.get());
       
-    
+      if(ticks>50){
+        m_ElevatorSubsystem.setIntakeSpeed(0.5);
+        if(ticks>60){
+          m_SpindexerSubsystem.Spin(0.5);
+        }
+      }
+      ticks++;
     }// else {
       //SmartDashboard.putBoolean("isValidId", false);
       //m_tidFound=false;
