@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SubsystemConstants;
 
 public class ShooterSubsystem  extends SubsystemBase {
-    private final SparkMax m_moter = new SparkMax(SubsystemConstants.kShooterId, MotorType.kBrushless);
+    private final SparkMax m_moter = new SparkMax(42, MotorType.kBrushless);
     private Supplier<Double> m_speed;
     //private final SparkMax m_IntakeMotorRight = new SparkMax(SubsystemConstants.kAlgaeLiftCanId, MotorType.kBrushless);
     public ShooterSubsystem() {

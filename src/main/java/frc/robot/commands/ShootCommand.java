@@ -11,13 +11,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LimelightHelpers;
 import frc.robot.subsystems.ShooterSubsystem;
 
+//import static edu.wpi.first.units.Units.Volt;
+
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.PIDController;
 public class ShootCommand extends Command {
 
 
-  private ShooterSubsystem m_turretSubsystem;
+  private ShooterSubsystem m_shooterSubsystem;
   private double m_targetZ; 
   private double m_tid;
   private double m_Forward;
@@ -31,16 +33,16 @@ public class ShootCommand extends Command {
   private double m_driveForwardTarget;
   PIDController m_xSpeedController = new PIDController(kSpeedKp, kSpeedKi, kSpeedKd);
 
-  private boolean m_tidFound = false;
+  //private boolean m_tidFound = false;
 
   
   //private NetworkTable m_table;
 
-  public ShootCommand(ShooterSubsystem turretSubsystem) {
+  public ShootCommand(ShooterSubsystem shooterSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_turretSubsystem = turretSubsystem;
+    m_shooterSubsystem = shooterSubsystem;
 
-    addRequirements(m_turretSubsystem);
+    addRequirements(m_shooterSubsystem);
 
         //NetworkTableInstance inst = NetworkTableInstance.getDefault();
     //m_table = inst.getTable("Shoot");
@@ -73,7 +75,7 @@ public class ShootCommand extends Command {
 
   private double calcDist(){
     double targetAngleOffset=LimelightHelpers.getTY("limelight") ;
-    double limelightAngle=90-37.5;
+    double limelightAngle=180-132;//132
     double limelightLensHeightInches = 6.0; 
     double goalHeightInches = 44.25;
     double angleToGoalDegrees = limelightAngle + targetAngleOffset;
@@ -105,12 +107,18 @@ public class ShootCommand extends Command {
     double maxMotorrpm=5676.0; 
 
     maxMotorrpm=maxMotorrpm/16.0;
+
+    //change to mapVolt change speed
+    double MapVolt=3.0; 
+
+    double Volts=(wheelrpm/maxMotorrpm)*MapVolt;
     
     SmartDashboard.putNumber("wheel rpm", wheelrpm);
-    SmartDashboard.putNumber("motor volts", wheelrpm/maxMotorrpm);
-    if(wheelrpm/maxMotorrpm <= 1.0){
+    SmartDashboard.putNumber("motor volts", Volts);
+   
+    if(Volts<= 1.0){
       
-      return wheelrpm/maxMotorrpm;
+         return Volts;
     } else {
       return 1.0;
     }
@@ -132,22 +140,22 @@ public class ShootCommand extends Command {
       double ballVelocity = calcSpeed(calcDist());
       m_shootTargetSpeed =()->calcMotorVolts(ballVelocity);
       SmartDashboard.putNumber("target turret speed", m_shootTargetSpeed.get());
-      m_turretSubsystem.setIntakeSpeed(m_shootTargetSpeed.get());
+      m_shooterSubsystem.setIntakeSpeed(m_shootTargetSpeed.get());
       
     
-    } else {
-      SmartDashboard.putBoolean("isValidId", false);
-      m_tidFound=false;
+    }// else {
+      //SmartDashboard.putBoolean("isValidId", false);
+      //m_tidFound=false;
       //m_turretSubsystem.drive(0, 0, 0, true);
-    }
+    //}
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_shootTargetSpeed = ()->0.0;
-      m_turretSubsystem.setIntakeSpeed(m_shootTargetSpeed.get());
+      m_shooterSubsystem.setIntakeSpeed(m_shootTargetSpeed.get());
     
-    m_turretSubsystem.setIntakeSpeed(()->0.0);
+    //m_turretSubsystem.setIntakeSpeed(0.0);
   }
 
   // Returns true when the command should end.
