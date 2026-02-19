@@ -26,8 +26,8 @@ public class ShooterAnglerSubsystem  extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Angle Shooter Position", (m_AnglerEncoder.getPosition()/16.0));
     }
-    public void setSpeed(Supplier<Double> speed) {
-        m_AnglerMotor.set(speed.get());
+    public void setSpeed(double speed) {
+        m_AnglerMotor.set(speed);
         
 
         

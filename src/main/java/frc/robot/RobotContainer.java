@@ -12,7 +12,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterAnglerSubsystem;
-//import frc.robot.subsystems.ShootingSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.XboxController;
@@ -28,6 +28,8 @@ import frc.robot.commands.ShootCommand;
 import frc.robot.commands.RotateTurretCommand;
 //import frc.robot.commands.ShootingCommand;
 import frc.robot.subsystems.SpindexerSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -51,7 +53,7 @@ public class RobotContainer {
   private final SpindexerSubsystem m_SpindexerSubsystem = new SpindexerSubsystem();
   private final SendableChooser<Command> autoChooser;
   //private final ShooterSubsystem m_ShooterSubsystem= new ShooterSubsystem();
-  //private final TurretSubsystem m_TurretSubsystem = new TurretSubsystem();
+  private final TurretSubsystem m_TurretSubsystem = new TurretSubsystem();
   public boolean fieldRelative = true;
   private final Robot m_robot;
   private TeleOpDriveCommand m_TeleOpDriveCommand;
@@ -77,7 +79,7 @@ NamedCommands.registerCommand("Intake",AutoIntakeCommand());
      m_TeleOpDriveCommand=new TeleOpDriveCommand(m_DriveSubsystem,
       () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
        () -> m_robot.isTeleopEnabled(),()->fieldRelative);
-    //m_RotateTurretCommand = new RotateTurretCommand(m_TurretSubsystem, () -> m_subDriverController.getRightX());
+    m_RotateTurretCommand = new RotateTurretCommand(m_TurretSubsystem, () -> m_subDriverController.getRightX());
     // Configure the trigger bindings
     configureBindings();
   }
@@ -109,13 +111,15 @@ NamedCommands.registerCommand("Intake",AutoIntakeCommand());
      m_driverController.rightBumper().whileTrue(new InstantCommand(() -> m_speedMultiplier = 0.5));
      m_driverController.rightBumper().whileFalse(new InstantCommand(() -> m_speedMultiplier = 1.0));
      m_driverController.back().onTrue(new InstantCommand(() -> m_DriveSubsystem.stopAndLockWheels()));
-     //m_subDriverController.a().whileTrue(new AngleShooterCommand(m_AnglerSubsystem));
+     m_subDriverController.a().whileTrue(new AngleShooterCommand(m_AnglerSubsystem));
 
      //m_subDriverController.a().whileTrue(new IntakeCommand(m_IntakeSubsystem));
      //m_subDriverController.b().whileTrue(new ShootingCommand(m_ShootingSubsystem));
      //m_subDriverController.a().whileTrue(new ShootCommand(m_ShooterSubsystem));
-     m_subDriverController.b().whileTrue(new InstantCommand(() -> m_SpindexerSubsystem.Spin(1.0)));
-     m_subDriverController.b().whileFalse(new InstantCommand(() -> m_SpindexerSubsystem.Spin(0.0)));
+     //m_subDriverController.b().whileTrue(new InstantCommand(() -> m_SpindexerSubsystem.Spin(1.0)));
+     //m_subDriverController.b().whileFalse(new InstantCommand(() -> m_SpindexerSubsystem.Spin(0.0)));
+     m_subDriverController.rightTrigger().whileTrue(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(1.0)));
+     m_subDriverController.rightTrigger().whileFalse(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(0.0)));
      //m_TurretSubsystem.setDefaultCommand(m_RotateTurretCommand);
   }
 
