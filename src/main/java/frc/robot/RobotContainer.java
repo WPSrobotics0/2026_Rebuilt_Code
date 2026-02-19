@@ -29,6 +29,7 @@ import frc.robot.commands.RotateTurretCommand;
 //import frc.robot.commands.ShootingCommand;
 import frc.robot.subsystems.SpindexerSubsystem;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -44,7 +45,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
-  //private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
+  private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
  //private final ShooterAnglerSubsystem m_AnglerSubsystem = new ShooterAnglerSubsystem();
   //private final ShootingSubsystem m_ShootingSubsystem = new ShootingSubsystem();
   private final SpindexerSubsystem m_SpindexerSubsystem = new SpindexerSubsystem();
@@ -55,15 +56,20 @@ public class RobotContainer {
   private final Robot m_robot;
   private TeleOpDriveCommand m_TeleOpDriveCommand;
   //private RotateTurretCommand m_RotateTurretCommand;
+  public Command AutoIntakeCommand() {
+    return new IntakeCommand(m_IntakeSubsystem);
+  }
+  
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final static CommandXboxController m_driverController = new CommandXboxController(
       OIConstants.kDriverControllerPort0);
       public final static CommandXboxController m_subDriverController = new CommandXboxController(
       OIConstants.kDriverControllerPort1);
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer(Robot robot) {
+      /** The container for the robot. Contains subsystems, OI devices, and commands. */
+      public RobotContainer(Robot robot) {
     m_robot = robot;
+NamedCommands.registerCommand("Intake",AutoIntakeCommand());
 
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);

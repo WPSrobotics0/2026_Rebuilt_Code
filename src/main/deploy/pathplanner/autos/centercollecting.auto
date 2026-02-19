@@ -51,6 +51,12 @@
           "data": {
             "pathName": "movement6"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
         }
       ]
     }
