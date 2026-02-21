@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.TeleOpDriveCommand;
+import frc.robot.commands.RetractCommand;
 import frc.robot.commands.alignDistanceWithTagCommand;
 import frc.robot.cwtech.Conditioning;
 import frc.robot.subsystems.DriveSubsystem;
@@ -113,7 +114,8 @@ NamedCommands.registerCommand("Intake",AutoIntakeCommand());
      m_driverController.back().onTrue(new InstantCommand(() -> m_DriveSubsystem.stopAndLockWheels()));
      //m_subDriverController.a().whileTrue(new AngleShooterCommand(m_AnglerSubsystem));
 
-     //m_subDriverController.a().whileTrue(new IntakeCommand(m_IntakeSubsystem));
+     m_subDriverController.a().whileTrue(new IntakeCommand(m_IntakeSubsystem));
+     m_subDriverController.a().whileFalse(new RetractCommand(m_IntakeSubsystem));
      //m_subDriverController.b().whileTrue(new ShootingCommand(m_ShootingSubsystem));
      //m_subDriverController.a().whileTrue(new ShootCommand(m_ShooterSubsystem));
      //m_subDriverController.b().whileTrue(new InstantCommand(() -> m_SpindexerSubsystem.Spin(1.0)));
