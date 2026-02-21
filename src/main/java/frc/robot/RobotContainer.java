@@ -14,6 +14,8 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterAnglerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.SpindexerSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.XboxController;
@@ -34,6 +36,7 @@ import frc.robot.subsystems.TurretSubsystem;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -52,8 +55,9 @@ public class RobotContainer {
  //private final ShooterAnglerSubsystem m_AnglerSubsystem = new ShooterAnglerSubsystem();
   //private final ShootingSubsystem m_ShootingSubsystem = new ShootingSubsystem();
   private final SpindexerSubsystem m_SpindexerSubsystem = new SpindexerSubsystem();
+  private final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
   private final SendableChooser<Command> autoChooser;
-  //private final ShooterSubsystem m_ShooterSubsystem= new ShooterSubsystem();
+  private final ShooterSubsystem m_ShooterSubsystem= new ShooterSubsystem();
   private final TurretSubsystem m_TurretSubsystem = new TurretSubsystem();
   public boolean fieldRelative = true;
   private final Robot m_robot;
@@ -62,6 +66,10 @@ public class RobotContainer {
   public Command AutoIntakeCommand() {
     return new IntakeCommand(m_IntakeSubsystem);
   }
+  public Command AutoShootCommand(){
+    return new ShootCommand(m_ShooterSubsystem, m_ElevatorSubsystem, m_SpindexerSubsystem);
+  }
+  
   
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -73,6 +81,7 @@ public class RobotContainer {
       public RobotContainer(Robot robot) {
     m_robot = robot;
 NamedCommands.registerCommand("Intake",AutoIntakeCommand());
+ NamedCommands.registerCommand("Shoot",AutoShootCommand());
 
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
