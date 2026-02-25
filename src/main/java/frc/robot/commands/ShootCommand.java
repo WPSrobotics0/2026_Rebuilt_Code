@@ -150,7 +150,7 @@ public class ShootCommand extends Command {
       
       if(ticks>50){
         m_ElevatorSubsystem.setIntakeSpeed(0.5);
-        if(ticks>60){
+        if(ticks>55){
           m_SpindexerSubsystem.Spin(0.5);
         }
       }
@@ -164,9 +164,10 @@ public class ShootCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_ElevatorSubsystem.setIntakeSpeed(0.0);
+    m_SpindexerSubsystem.Spin(0.0);
     m_shootTargetSpeed = ()->0.0;
-      m_shooterSubsystem.setIntakeSpeed(m_shootTargetSpeed.get());
-    
+    m_shooterSubsystem.setIntakeSpeed(m_shootTargetSpeed.get());
     //m_turretSubsystem.setIntakeSpeed(0.0);
   }
 

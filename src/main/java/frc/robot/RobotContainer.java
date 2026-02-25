@@ -47,9 +47,9 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
   //private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
-  private final ShooterAnglerSubsystem m_AnglerSubsystem = new ShooterAnglerSubsystem();
+  //private final ShooterAnglerSubsystem m_AnglerSubsystem = new ShooterAnglerSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
-  //private final SpindexerSubsystem m_SpindexerSubsystem = new SpindexerSubsystem();
+  private final SpindexerSubsystem m_SpindexerSubsystem = new SpindexerSubsystem();
   private final SendableChooser<Command> autoChooser;
   //private final ShooterSubsystem m_ShooterSubsystem= new ShooterSubsystem();
   private final TurretSubsystem m_TurretSubsystem = new TurretSubsystem();
@@ -105,13 +105,13 @@ public class RobotContainer {
      m_driverController.rightBumper().whileTrue(new InstantCommand(() -> m_speedMultiplier = 0.5));
      m_driverController.rightBumper().whileFalse(new InstantCommand(() -> m_speedMultiplier = 1.0));
      m_driverController.back().onTrue(new InstantCommand(() -> m_DriveSubsystem.stopAndLockWheels()));
-     m_subDriverController.a().whileTrue(new AngleShooterCommand(m_AnglerSubsystem));
+     //m_subDriverController.a().whileTrue(new AngleShooterCommand(m_AnglerSubsystem));
 
      //m_subDriverController.a().whileTrue(new IntakeCommand(m_IntakeSubsystem));
      //m_subDriverController.b().whileTrue(new ShootingCommand(m_ShootingSubsystem));
      //m_subDriverController.a().whileTrue(new ShootCommand(m_ShooterSubsystem));
-     //m_subDriverController.b().whileTrue(new InstantCommand(() -> m_SpindexerSubsystem.Spin(1.0)));
-     //m_subDriverController.b().whileFalse(new InstantCommand(() -> m_SpindexerSubsystem.Spin(0.0)));
+     m_subDriverController.b().whileTrue(new InstantCommand(() -> m_SpindexerSubsystem.Spin(1.0)));
+     m_subDriverController.b().whileFalse(new InstantCommand(() -> m_SpindexerSubsystem.Spin(0.0)));
      m_subDriverController.rightTrigger().whileTrue(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(1.0)));
      m_subDriverController.rightTrigger().whileFalse(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(0.0)));
      //m_TurretSubsystem.setDefaultCommand(m_RotateTurretCommand);

@@ -121,6 +121,7 @@ public void resetPose(Pose2d pose) {
             return;
         resetSteeringMotorsToAbsolute();
         m_navX.reset();
+    
         m_initalized = true;
     }
     public void zeroHeading() {
