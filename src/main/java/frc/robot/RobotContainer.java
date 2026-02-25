@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.TeleOpDriveCommand;
+import frc.robot.commands.RetractCommand;
 import frc.robot.commands.alignDistanceWithTagCommand;
 import frc.robot.cwtech.Conditioning;
 import frc.robot.subsystems.DriveSubsystem;
@@ -13,6 +14,8 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterAnglerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.SpindexerSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.XboxController;
@@ -31,6 +34,8 @@ import frc.robot.subsystems.SpindexerSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -46,26 +51,44 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
+<<<<<<< HEAD
   //private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
   //private final ShooterAnglerSubsystem m_AnglerSubsystem = new ShooterAnglerSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final SpindexerSubsystem m_SpindexerSubsystem = new SpindexerSubsystem();
+=======
+  private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
+ //private final ShooterAnglerSubsystem m_AnglerSubsystem = new ShooterAnglerSubsystem();
+  //private final ShootingSubsystem m_ShootingSubsystem = new ShootingSubsystem();
+  private final SpindexerSubsystem m_SpindexerSubsystem = new SpindexerSubsystem();
+  private final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
+>>>>>>> 1078f4865b7df3d8c7629a4f19b08fc5e8be0f5f
   private final SendableChooser<Command> autoChooser;
-  //private final ShooterSubsystem m_ShooterSubsystem= new ShooterSubsystem();
+  private final ShooterSubsystem m_ShooterSubsystem= new ShooterSubsystem();
   private final TurretSubsystem m_TurretSubsystem = new TurretSubsystem();
   public boolean fieldRelative = true;
   private final Robot m_robot;
   private TeleOpDriveCommand m_TeleOpDriveCommand;
-  private RotateTurretCommand m_RotateTurretCommand;
+  //private RotateTurretCommand m_RotateTurretCommand;
+  public Command AutoIntakeCommand() {
+    return new IntakeCommand(m_IntakeSubsystem);
+  }
+  public Command AutoShootCommand(){
+    return new ShootCommand(m_ShooterSubsystem, m_ElevatorSubsystem, m_SpindexerSubsystem);
+  }
+  
+  
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final static CommandXboxController m_driverController = new CommandXboxController(
       OIConstants.kDriverControllerPort0);
       public final static CommandXboxController m_subDriverController = new CommandXboxController(
       OIConstants.kDriverControllerPort1);
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer(Robot robot) {
+      /** The container for the robot. Contains subsystems, OI devices, and commands. */
+      public RobotContainer(Robot robot) {
     m_robot = robot;
+NamedCommands.registerCommand("Intake",AutoIntakeCommand());
+ NamedCommands.registerCommand("Shoot",AutoShootCommand());
 
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -73,7 +96,7 @@ public class RobotContainer {
      m_TeleOpDriveCommand=new TeleOpDriveCommand(m_DriveSubsystem,
       () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
        () -> m_robot.isTeleopEnabled(),()->fieldRelative);
-    m_RotateTurretCommand = new RotateTurretCommand(m_TurretSubsystem, () -> m_subDriverController.getRightX());
+    //m_RotateTurretCommand = new RotateTurretCommand(m_TurretSubsystem, () -> m_subDriverController.getRightX());
     // Configure the trigger bindings
     configureBindings();
   }
@@ -107,13 +130,21 @@ public class RobotContainer {
      m_driverController.back().onTrue(new InstantCommand(() -> m_DriveSubsystem.stopAndLockWheels()));
      //m_subDriverController.a().whileTrue(new AngleShooterCommand(m_AnglerSubsystem));
 
-     //m_subDriverController.a().whileTrue(new IntakeCommand(m_IntakeSubsystem));
+     m_subDriverController.a().whileTrue(new IntakeCommand(m_IntakeSubsystem));
+     m_subDriverController.a().whileFalse(new RetractCommand(m_IntakeSubsystem));
      //m_subDriverController.b().whileTrue(new ShootingCommand(m_ShootingSubsystem));
      //m_subDriverController.a().whileTrue(new ShootCommand(m_ShooterSubsystem));
+<<<<<<< HEAD
      m_subDriverController.b().whileTrue(new InstantCommand(() -> m_SpindexerSubsystem.Spin(1.0)));
      m_subDriverController.b().whileFalse(new InstantCommand(() -> m_SpindexerSubsystem.Spin(0.0)));
      m_subDriverController.rightTrigger().whileTrue(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(1.0)));
      m_subDriverController.rightTrigger().whileFalse(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(0.0)));
+=======
+     //m_subDriverController.b().whileTrue(new InstantCommand(() -> m_SpindexerSubsystem.Spin(1.0)));
+     //m_subDriverController.b().whileFalse(new InstantCommand(() -> m_SpindexerSubsystem.Spin(0.0)));
+     //m_subDriverController.rightTrigger().whileTrue(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(1.0)));
+     //m_subDriverController.rightTrigger().whileFalse(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(0.0)));
+>>>>>>> 1078f4865b7df3d8c7629a4f19b08fc5e8be0f5f
      //m_TurretSubsystem.setDefaultCommand(m_RotateTurretCommand);
   }
 
