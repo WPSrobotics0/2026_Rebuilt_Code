@@ -51,18 +51,11 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
-<<<<<<< HEAD
-  //private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
-  //private final ShooterAnglerSubsystem m_AnglerSubsystem = new ShooterAnglerSubsystem();
-  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
-  private final SpindexerSubsystem m_SpindexerSubsystem = new SpindexerSubsystem();
-=======
   private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
  //private final ShooterAnglerSubsystem m_AnglerSubsystem = new ShooterAnglerSubsystem();
   //private final ShootingSubsystem m_ShootingSubsystem = new ShootingSubsystem();
   private final SpindexerSubsystem m_SpindexerSubsystem = new SpindexerSubsystem();
   private final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
->>>>>>> 1078f4865b7df3d8c7629a4f19b08fc5e8be0f5f
   private final SendableChooser<Command> autoChooser;
   private final ShooterSubsystem m_ShooterSubsystem= new ShooterSubsystem();
   private final TurretSubsystem m_TurretSubsystem = new TurretSubsystem();
@@ -130,21 +123,22 @@ NamedCommands.registerCommand("Intake",AutoIntakeCommand());
      m_driverController.back().onTrue(new InstantCommand(() -> m_DriveSubsystem.stopAndLockWheels()));
      //m_subDriverController.a().whileTrue(new AngleShooterCommand(m_AnglerSubsystem));
 
-     m_subDriverController.a().whileTrue(new IntakeCommand(m_IntakeSubsystem));
-     m_subDriverController.a().whileFalse(new RetractCommand(m_IntakeSubsystem));
+     m_subDriverController.leftTrigger().whileTrue(new IntakeCommand(m_IntakeSubsystem));
+     m_subDriverController.leftTrigger().whileFalse(new RetractCommand(m_IntakeSubsystem));
      //m_subDriverController.b().whileTrue(new ShootingCommand(m_ShootingSubsystem));
      //m_subDriverController.a().whileTrue(new ShootCommand(m_ShooterSubsystem));
-<<<<<<< HEAD
      m_subDriverController.b().whileTrue(new InstantCommand(() -> m_SpindexerSubsystem.Spin(1.0)));
      m_subDriverController.b().whileFalse(new InstantCommand(() -> m_SpindexerSubsystem.Spin(0.0)));
+     
+     m_subDriverController.y().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setRotate(-1.0)));
+     m_subDriverController.y().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setRotate(0.0)));
+     m_subDriverController.x().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setRotate(1.0)));
+     m_subDriverController.x().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setRotate(0.0)));
+     m_subDriverController.a().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 1.0)));
+     m_subDriverController.a().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.0)));
+     
      m_subDriverController.rightTrigger().whileTrue(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(1.0)));
      m_subDriverController.rightTrigger().whileFalse(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(0.0)));
-=======
-     //m_subDriverController.b().whileTrue(new InstantCommand(() -> m_SpindexerSubsystem.Spin(1.0)));
-     //m_subDriverController.b().whileFalse(new InstantCommand(() -> m_SpindexerSubsystem.Spin(0.0)));
-     //m_subDriverController.rightTrigger().whileTrue(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(1.0)));
-     //m_subDriverController.rightTrigger().whileFalse(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(0.0)));
->>>>>>> 1078f4865b7df3d8c7629a4f19b08fc5e8be0f5f
      //m_TurretSubsystem.setDefaultCommand(m_RotateTurretCommand);
   }
 

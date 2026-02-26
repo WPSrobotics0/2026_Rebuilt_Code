@@ -6,7 +6,7 @@ public class IntakeCommand extends Command {
    private IntakeSubsystem m_intake;
    private double m_speed=1.0;
    private double m_Target=1.0;
-   private double gearratio=16.0;
+   private double gearratio=12.0;
    public IntakeCommand(IntakeSubsystem intake){
     addRequirements(intake);
     m_intake = intake;
@@ -21,7 +21,7 @@ public class IntakeCommand extends Command {
     @Override
   public void execute() {
     m_intake.setIntakeSpeed(()->m_speed);
-  double speed = Math.abs(m_Target-m_intake.m_IntakeMotorRightEncoder.getPosition()/gearratio);
+  double speed = Math.abs(m_Target-m_intake.m_IntakeLiftMotorEncoder.getPosition()/gearratio);
   if (speed>1.0){
     speed=1.0;
   }

@@ -6,7 +6,7 @@ public class RetractCommand extends Command {
    private IntakeSubsystem m_intake;
    private double m_speed=1.0;
    private double m_Target=0.0;
-   private double gearratio=16.0;
+   private double gearratio=12.0;
    public RetractCommand(IntakeSubsystem intake){
     addRequirements(intake);
     m_intake = intake;
@@ -21,7 +21,7 @@ public class RetractCommand extends Command {
     @Override
   public void execute() {
     m_intake.setIntakeSpeed(()->0.0);
-  double speed = Math.abs(m_Target-m_intake.m_IntakeMotorRightEncoder.getPosition()/gearratio);
+  double speed = Math.abs(m_Target-m_intake.m_IntakeLiftMotorEncoder.getPosition()/gearratio);
   if (speed>1.0){
     speed=1.0;
   }
