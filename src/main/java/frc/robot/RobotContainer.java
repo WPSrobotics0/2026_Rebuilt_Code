@@ -130,11 +130,11 @@ NamedCommands.registerCommand("Intake",AutoIntakeCommand());
      m_subDriverController.b().whileTrue(new InstantCommand(() -> m_SpindexerSubsystem.Spin(1.0)));
      m_subDriverController.b().whileFalse(new InstantCommand(() -> m_SpindexerSubsystem.Spin(0.0)));
      
-     m_subDriverController.y().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setRotate(-1.0)));
+     m_subDriverController.y().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setRotate(-0.5)));
      m_subDriverController.y().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setRotate(0.0)));
-     m_subDriverController.x().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setRotate(1.0)));
+     m_subDriverController.x().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setRotate(0.1)));
      m_subDriverController.x().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setRotate(0.0)));
-     m_subDriverController.a().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 1.0)));
+     m_subDriverController.a().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> -1.0)));
      m_subDriverController.a().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.0)));
      
      m_subDriverController.rightTrigger().whileTrue(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(1.0)));

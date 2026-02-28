@@ -93,12 +93,12 @@ public class ShootCommand extends Command {
   private double calcSpeed(double distance){
     //pythagorean (placeholder, I know not accurate at all) for speed
     double dist=calcDist();
-
+    double distfromshooter=dist-42;
     double height= 44.25-6.0;
     double hypot=Math.sqrt((dist*dist)+(height*height));
     //seconds to reach target
     double seconds=5.0;
-    double velocity = hypot/seconds;
+    double velocity = (2*distfromshooter)/3;
     //velocity= inches/seconds
     SmartDashboard.putNumber("dist", dist);
     SmartDashboard.putNumber("hypotinuse", hypot);
@@ -107,7 +107,7 @@ public class ShootCommand extends Command {
   }
   private double calcMotorVolts(double velocity){
     //wheels rpm
-    double wheelDiameter=3.0;
+    double wheelDiameter=4.0;
     double wheelrpm=(velocity*60)/(Math.PI*wheelDiameter);
     
     double maxMotorrpm=5676.0; 
