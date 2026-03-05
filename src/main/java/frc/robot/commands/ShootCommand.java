@@ -105,6 +105,7 @@ public class ShootCommand extends Command {
     SmartDashboard.putNumber("velocity", velocity);
     return velocity;
   }
+  
   //private double calcInitialVelocity()
   private double calcMotorVolts(double velocity){
     //wheels rpm
