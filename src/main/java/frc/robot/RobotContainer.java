@@ -62,7 +62,7 @@ public class RobotContainer {
   public boolean fieldRelative = true;
   private final Robot m_robot;
   private TeleOpDriveCommand m_TeleOpDriveCommand;
-  //private RotateTurretCommand m_RotateTurretCommand;
+  private RotateTurretCommand m_RotateTurretCommand;
   public Command AutoIntakeCommand() {
     return new IntakeCommand(m_IntakeSubsystem);
   }
@@ -89,7 +89,7 @@ NamedCommands.registerCommand("Intake",AutoIntakeCommand());
      m_TeleOpDriveCommand=new TeleOpDriveCommand(m_DriveSubsystem,
       () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
        () -> m_robot.isTeleopEnabled(),()->fieldRelative);
-    //m_RotateTurretCommand = new RotateTurretCommand(m_TurretSubsystem, () -> m_subDriverController.getRightX());
+    m_RotateTurretCommand = new RotateTurretCommand(m_TurretSubsystem, () -> m_subDriverController.getRightX());
     // Configure the trigger bindings
     configureBindings();
   }
@@ -134,12 +134,12 @@ NamedCommands.registerCommand("Intake",AutoIntakeCommand());
      m_subDriverController.y().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setRotate(0.0)));
      m_subDriverController.x().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setRotate(0.1)));
      m_subDriverController.x().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setRotate(0.0)));
-     m_subDriverController.a().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> -1.0)));
+     m_subDriverController.a().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> -0.8)));
      m_subDriverController.a().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.0)));
      
-     m_subDriverController.rightTrigger().whileTrue(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(1.0)));
+     m_subDriverController.rightTrigger().whileTrue(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(0.5)));
      m_subDriverController.rightTrigger().whileFalse(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(0.0)));
-     //m_TurretSubsystem.setDefaultCommand(m_RotateTurretCommand);
+     m_TurretSubsystem.setDefaultCommand(m_RotateTurretCommand);
   }
 
   /**

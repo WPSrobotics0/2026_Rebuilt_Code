@@ -22,14 +22,16 @@ public class IntakeCommand extends Command {
   public void execute() {
     m_intake.setIntakeSpeed(()->m_speed);
   double speed = Math.abs(m_Target-m_intake.m_IntakeLiftMotorEncoder.getPosition()/gearratio);
-  if (speed>1.0){
-    speed=1.0;
+  double topSpeed=0.2;
+  if (speed>topSpeed){
+    speed=topSpeed;
   }
   m_intake.setRotate(speed);
   }
    @Override
   public void end(boolean interrupted) {
     m_intake.setIntakeSpeed(()->0.0);
+     m_intake.setRotate(0.0);
 }
 
 

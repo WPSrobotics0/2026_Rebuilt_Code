@@ -22,8 +22,9 @@ public class RetractCommand extends Command {
   public void execute() {
     m_intake.setIntakeSpeed(()->0.0);
   double speed = Math.abs(m_Target-m_intake.m_IntakeLiftMotorEncoder.getPosition()/gearratio);
-  if (speed>1.0){
-    speed=1.0;
+  double topSpeed=1.0;
+  if (speed>topSpeed){
+    speed=topSpeed;
   }
   speed*=-1.0;
   m_intake.setRotate(speed);

@@ -72,7 +72,7 @@ public final class Constants {
     public static final int kAnglerId = 41;
     public static final int kIntakeLiftId = 31;
     public static final int kIntakeId = 32;
-    //public static final int kShooterId = 41;
+    public static final int kShooterId = 7;
 
     /*public static final int kRightCoralCanId = 7;
     public static final int kRightAlgaeCanId = 8;
