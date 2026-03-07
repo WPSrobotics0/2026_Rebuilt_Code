@@ -73,15 +73,8 @@ public final class Constants {
     public static final int kIntakeLiftId = 31;
     public static final int kIntakeId = 32;
     public static final int kShooterId = 7;
-
-    /*public static final int kRightCoralCanId = 7;
-    public static final int kRightAlgaeCanId = 8;
-    public static final int kAlgaeLiftCanId =9;
-
-    public static final int kClimbMotor1CanId = 31;
-    public static final int kClimbMotor2CanId = 32;
-    */
-
+    public static final int kFeederLeftId = 8;
+    public static final int kFeederRightId = 9;
   }
 
   public static final class ModuleConstants {

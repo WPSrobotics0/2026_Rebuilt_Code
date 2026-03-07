@@ -8,7 +8,7 @@ package frc.robot.commands;
 //import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.LimelightHelpers;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SpindexerSubsystem;
@@ -22,7 +22,7 @@ public class ShootCommand extends Command {
 
 
   private ShooterSubsystem m_shooterSubsystem;
-  private ElevatorSubsystem m_ElevatorSubsystem;
+  private FeederSubsystem m_FeederSubsystem;
   private SpindexerSubsystem m_SpindexerSubsystem;
   private double m_targetZ; 
   private double m_tid;
@@ -43,12 +43,12 @@ public class ShootCommand extends Command {
   
   //private NetworkTable m_table;
 
-  public ShootCommand(ShooterSubsystem shooterSubsystem, ElevatorSubsystem elevatorSubsystem, SpindexerSubsystem spindexerSubsystem) {
+  public ShootCommand(ShooterSubsystem shooterSubsystem, FeederSubsystem feederSubsystem, SpindexerSubsystem spindexerSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooterSubsystem = shooterSubsystem;
-    m_ElevatorSubsystem=elevatorSubsystem;
+    m_FeederSubsystem=feederSubsystem;
     m_SpindexerSubsystem=spindexerSubsystem;
-    addRequirements(m_shooterSubsystem, m_ElevatorSubsystem, m_SpindexerSubsystem);
+    addRequirements(m_shooterSubsystem, m_FeederSubsystem, m_SpindexerSubsystem);
 
     //NetworkTableInstance inst = NetworkTableInstance.getDefault();
     //m_table = inst.getTable("Shoot");
@@ -151,7 +151,7 @@ public class ShootCommand extends Command {
       m_shooterSubsystem.setIntakeSpeed(m_shootTargetSpeed.get());
       
       if(ticks>50){
-        m_ElevatorSubsystem.setIntakeSpeed(0.5);
+        m_FeederSubsystem.setFeederSpeed(0.5);
         if(ticks>60){
           m_SpindexerSubsystem.Spin(0.5);
         }

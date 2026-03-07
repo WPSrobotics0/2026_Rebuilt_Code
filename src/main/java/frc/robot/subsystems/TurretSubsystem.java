@@ -21,9 +21,9 @@ public class TurretSubsystem  extends SubsystemBase {
 
     private final SparkMax m_TurretMotor = new SparkMax(SubsystemConstants.kTurretId, MotorType.kBrushless);
     private final AM_CAN_HexBoreEncoder absEncoder = new AM_CAN_HexBoreEncoder(0);
-    private SparkRelativeEncoder m_TurretEncoder = (SparkRelativeEncoder) m_TurretMotor.getEncoder();
-    private AM_Encoder_Telemetry teleData = absEncoder.getTelemetry();
-    private AM_EncoderStatus statData = absEncoder.getStatus();
+    public SparkRelativeEncoder m_TurretEncoder = (SparkRelativeEncoder) m_TurretMotor.getEncoder();
+    //private AM_Encoder_Telemetry teleData = absEncoder.getTelemetry();
+    //private AM_EncoderStatus statData = absEncoder.getStatus();
     public TurretSubsystem() {
         SparkMaxConfig liftConfig =new SparkMaxConfig();
         m_TurretMotor.configure(liftConfig, ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
@@ -40,8 +40,8 @@ public class TurretSubsystem  extends SubsystemBase {
         SmartDashboard.putNumber("Spindexer Speed", speed.get());
         double degrees = absEncoder.getAngleDegrees();
         double degreesPerSec =  absEncoder.getVelocityDegPerSec();
-        SmartDashboard.putNumber("hex bore angleDegrees", degrees);
-        SmartDashboard.putNumber("hexBoreVelocity", degreesPerSec);
+        //SmartDashboard.putNumber("hex bore angleDegrees", degrees);
+        //SmartDashboard.putNumber("hexBoreVelocity", degreesPerSec);
 
     }
 }

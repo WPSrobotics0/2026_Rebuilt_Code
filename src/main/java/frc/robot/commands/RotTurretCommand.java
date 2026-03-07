@@ -11,10 +11,10 @@ public class RotTurretCommand extends Command {
    private double m_speed = 0.0;
    private Supplier<Double> m_rightX;
    
-   public RotTurretCommand(TurretSubsystem Turret, Supplier<Double> rightX){
+   public RotTurretCommand(TurretSubsystem Turret){
     addRequirements(Turret);
     m_turret = Turret;
-    m_rightX=rightX;
+    
     
    }
     //only runs once
@@ -26,7 +26,7 @@ public class RotTurretCommand extends Command {
     @Override
   public void execute() {
     //m_turret.RotateTurret(m_rightX);
-    m_speed=m_turret.m_AnglerEncoder.getPosition()/16.0;
+    m_speed=m_turret.m_TurretEncoder.getPosition()/16.0;
     double target = LimelightHelpers.getTY("limelight")/20.0;
     double scaleSpeed=2.0;
     m_speed=Math.abs(target-m_speed)/scaleSpeed;
