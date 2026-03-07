@@ -27,12 +27,16 @@ public class RotTurretCommand extends Command {
   public void execute() {
     //m_turret.RotateTurret(m_rightX);
     m_speed=m_turret.m_TurretEncoder.getPosition()/16.0;
-    double target = LimelightHelpers.getTY("limelight")/20.0;
+    double target = LimelightHelpers.getTX("limelight")/20.0;
     double scaleSpeed=2.0;
     m_speed=Math.abs(target-m_speed)/scaleSpeed;
-    if (m_speed>1.0){
-      m_speed=1.0;
+    if (m_speed>0.3){
+      m_speed=0.3;
     }
+    if(target<(m_turret.m_TurretEncoder.getPosition()/16.0)){
+      m_speed*=-1.0;
+    }
+    m_turret.RotateTurret(()->m_speed);
   }
    @Override
   public void end(boolean interrupted) {
