@@ -28,6 +28,13 @@ public class FeederSubsystem  extends SubsystemBase {
     }
     public void setFeederSpeed(double speed) {
         m_FeederMotorLeft.set(speed);
+        m_FeederMotorRight.set(speed);
+    }
+    public void setFeederLeftSpeed(double speed) {
+        m_FeederMotorLeft.set(-1*speed);
+    }
+    public void setFeederRightSpeed(double speed) {
         m_FeederMotorRight.set(-1*speed);
     }
+    
 }

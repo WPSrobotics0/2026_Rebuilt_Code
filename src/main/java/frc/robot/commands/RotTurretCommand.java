@@ -34,8 +34,12 @@ public class RotTurretCommand extends Command {
     double gearRatio=16.0;
       if ((m_tid!=-1 && m_tid!=0)) {
         m_speed=m_turret.m_TurretEncoder.getPosition()/gearRatio;
-        double target = LimelightHelpers.getTX("limelight")/20.0;
-
+        //m_speed= m_turret.getAbsPos();
+        double scaleToOne=20.0;
+        double target = LimelightHelpers.getTX("limelight")/scaleToOne;// *180.0 //for degs
+        //double noEnterWest=315.0;
+        //double noEnterEast=45.0;
+        //target+=180.0;
         if((Math.abs(target-m_speed))>.05){
           double scaleSpeed=2.0;
           m_speed=Math.abs(target-m_speed)/scaleSpeed;
@@ -47,7 +51,12 @@ public class RotTurretCommand extends Command {
           if(target<(m_turret.m_TurretEncoder.getPosition()/gearRatio)){
             m_speed*=-1.0;
           }
-          
+          //if(((m_turret.getAbsPos()>0)&& (m_speed<0.0)))
+          /*if(m_speed<0.0){
+            if(){
+
+            }
+          }*/
           m_turret.RotateTurret(()->m_speed);
         }
         else{

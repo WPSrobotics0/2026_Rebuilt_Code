@@ -18,6 +18,7 @@ public class IntakeSubsystem  extends SubsystemBase {
 
     private final SparkMax m_IntakeMotor = new SparkMax(SubsystemConstants.kIntakeId, MotorType.kBrushless);
     private final SparkMax m_IntakeLiftMotor = new SparkMax(SubsystemConstants.kIntakeLiftId, MotorType.kBrushless);
+    //public final SparkRelativeEncoder m_IntakeEncoder = (SparkRelativeEncoder) m_IntakeLiftMotor.getEncoder();
     public SparkRelativeEncoder m_IntakeLiftMotorEncoder = (SparkRelativeEncoder) m_IntakeLiftMotor.getEncoder();
     public IntakeSubsystem() {
         SparkMaxConfig liftConfig =new SparkMaxConfig();
@@ -34,8 +35,8 @@ public class IntakeSubsystem  extends SubsystemBase {
         //m_IntakeMotorRight.set(-1*speed.get());
         SmartDashboard.putNumber("Intake Speed", speed.get());
     }
-    public void setRotate(double speed){
-        m_IntakeLiftMotor.set(speed);
-        SmartDashboard.putNumber("Intake Rotate Speed", speed);    }
+    public void setRotate(Supplier<Double> speed){
+        m_IntakeLiftMotor.set(speed.get());
+        SmartDashboard.putNumber("Intake Rotate Speed", speed.get());    }
 
 }

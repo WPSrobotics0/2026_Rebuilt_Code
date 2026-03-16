@@ -43,12 +43,12 @@ public class ShootCommand extends Command {
   
   //private NetworkTable m_table;
 
-  public ShootCommand(ShooterSubsystem shooterSubsystem, FeederSubsystem feederSubsystem, SpindexerSubsystem spindexerSubsystem) {
+  public ShootCommand(ShooterSubsystem shooterSubsystem, FeederSubsystem feederSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooterSubsystem = shooterSubsystem;
     m_FeederSubsystem=feederSubsystem;
-    m_SpindexerSubsystem=spindexerSubsystem;
-    addRequirements(m_shooterSubsystem, m_FeederSubsystem, m_SpindexerSubsystem);
+    //m_SpindexerSubsystem=spindexerSubsystem;
+    addRequirements(m_shooterSubsystem, m_FeederSubsystem);
 
     //NetworkTableInstance inst = NetworkTableInstance.getDefault();
     //m_table = inst.getTable("Shoot");
@@ -138,7 +138,17 @@ public class ShootCommand extends Command {
     m_tid = LimelightHelpers.getFiducialID("limelight");
   
     SmartDashboard.putNumber(" command tid", m_tid);
-   
+
+    m_shooterSubsystem.setIntakeSpeed(0.6);
+      
+      if(ticks>5){
+        m_FeederSubsystem.setFeederRightSpeed(0.5);
+        if(ticks>25
+        ){
+          m_FeederSubsystem.setFeederLeftSpeed(0.5);
+        }
+      }
+   ticks++;
     if (m_tid!=-1 && m_tid!=0) {
       //FORWARD SPEED
       m_driveForwardTarget=forward(); 
@@ -148,14 +158,15 @@ public class ShootCommand extends Command {
       double ballVelocity = calcSpeed(calcDist());
       m_shootTargetSpeed =()->calcMotorVolts(ballVelocity);
       SmartDashboard.putNumber("target turret speed", m_shootTargetSpeed.get());
-      m_shooterSubsystem.setIntakeSpeed(m_shootTargetSpeed.get());
+      m_shooterSubsystem.setIntakeSpeed(0.4);
       
-      if(ticks>50){
-        m_FeederSubsystem.setFeederSpeed(0.5);
+      /*if(ticks>50){
+        m_FeederSubsystem.setFeederRightSpeed(1.0);
         if(ticks>60){
-          m_SpindexerSubsystem.Spin(0.5);
+          m_FeederSubsystem.setFeederLeftSpeed(1.0);
         }
-      }
+          
+      }*/
       ticks++;
     }// else {
       //SmartDashboard.putBoolean("isValidId", false);
@@ -168,6 +179,8 @@ public class ShootCommand extends Command {
   public void end(boolean interrupted) {
     m_shootTargetSpeed = ()->0.0;
       m_shooterSubsystem.setIntakeSpeed(m_shootTargetSpeed.get());
+      m_FeederSubsystem.setFeederRightSpeed(0.0);
+      m_FeederSubsystem.setFeederLeftSpeed(0.0);
     
     //m_turretSubsystem.setIntakeSpeed(0.0);
   }

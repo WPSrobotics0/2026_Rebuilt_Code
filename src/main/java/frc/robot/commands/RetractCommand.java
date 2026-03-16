@@ -1,10 +1,13 @@
 package frc.robot.commands;
 
+import java.util.function.Supplier;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 public class RetractCommand extends Command {
    private IntakeSubsystem m_intake;
-   private double m_speed=1.0;
+   private Supplier<Double> m_speed=() -> 1.0;
    private double m_Target=0.0;
    private double gearratio=12.0;
    public RetractCommand(IntakeSubsystem intake){
@@ -15,23 +18,25 @@ public class RetractCommand extends Command {
     //only runs once
     @Override
     public void initialize() {
-        m_intake.setIntakeSpeed(()->m_speed);
+        m_intake.setRotate(m_speed);
     }
 //everyt time it is ran
     @Override
   public void execute() {
-    m_intake.setIntakeSpeed(()->0.0);
+    m_intake.setRotate(()->0.0);
   double speed = Math.abs(m_Target-m_intake.m_IntakeLiftMotorEncoder.getPosition()/gearratio);
   double topSpeed=1.0;
   if (speed>topSpeed){
     speed=topSpeed;
   }
   speed*=-1.0;
-  m_intake.setRotate(speed);
+  SmartDashboard.putNumber("retract motor position", m_intake.m_IntakeLiftMotorEncoder.getPosition()/gearratio);
+
+  //m_intake.setRotate(speed);
   }
    @Override
   public void end(boolean interrupted) {
-    m_intake.setIntakeSpeed(()->0.0);
+    m_intake.setRotate(()->0.0);
 }
 
 

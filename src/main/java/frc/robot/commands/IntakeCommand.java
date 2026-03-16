@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeCommand extends Command {
@@ -26,12 +27,13 @@ public class IntakeCommand extends Command {
   if (speed>topSpeed){
     speed=topSpeed;
   }
-  m_intake.setRotate(speed);
+  SmartDashboard.putNumber("lift motor position", m_intake.m_IntakeLiftMotorEncoder.getPosition()/gearratio);
+  //m_intake.setRotate(speed);
   }
    @Override
   public void end(boolean interrupted) {
     m_intake.setIntakeSpeed(()->0.0);
-     m_intake.setRotate(0.0);
+     m_intake.setRotate(()->0.0);
 }
 
 
