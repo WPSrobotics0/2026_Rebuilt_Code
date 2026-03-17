@@ -23,17 +23,17 @@ public class IntakeLiftCommand extends Command {
 //everyt time it is ran
     @Override
   public void execute() {
-    m_intake.setRotate(m_leftY);
-    /*if((m_intake.m_IntakeLiftMotorEncoder.getPosition() > -12.0) && (m_intake.m_IntakeLiftMotorEncoder.getPosition() < 1.0)){
+    //m_intake.setRotate(m_leftY);
+    if((m_intake.m_IntakeLiftMotorEncoder.getPosition() > -3.0) && (m_intake.m_IntakeLiftMotorEncoder.getPosition() < 7.0)){
       m_intake.setRotate(m_leftY);
-    } else if(m_intake.m_IntakeLiftMotorEncoder.getPosition() < -12.0){
-      if(m_leftY.get() > 0.05){
+    } else if(m_intake.m_IntakeLiftMotorEncoder.getPosition() < -1.0){
+      if(m_leftY.get() < -0.05){
         m_intake.setRotate(()->0.0);
       } else{
         m_intake.setRotate(m_leftY);
       }
-    } else if(m_intake.m_IntakeLiftMotorEncoder.getPosition() > 1.0){
-      if(m_leftY.get() < -0.05){
+    } else if(m_intake.m_IntakeLiftMotorEncoder.getPosition() > 7.0){
+      if(m_leftY.get() > 0.05){
         m_intake.setRotate(()->0.0);
       } else{
         m_intake.setRotate(m_leftY);
@@ -42,8 +42,9 @@ public class IntakeLiftCommand extends Command {
     } else{
       m_intake.setRotate(()->0.0);
     }
-      */
+    
     SmartDashboard.putNumber("lift motor position", m_intake.m_IntakeLiftMotorEncoder.getPosition());
+    SmartDashboard.putNumber("subDrive LeftY", m_leftY.get());
   }
    @Override
   public void end(boolean interrupted) {
