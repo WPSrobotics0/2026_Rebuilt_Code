@@ -20,7 +20,7 @@ import frc.robot.Constants.SubsystemConstants;
 public class TurretSubsystem  extends SubsystemBase {
 
     private final SparkMax m_TurretMotor = new SparkMax(SubsystemConstants.kTurretId, MotorType.kBrushless);
-    private final AM_CAN_HexBoreEncoder absEncoder = new AM_CAN_HexBoreEncoder(0);
+    public AM_CAN_HexBoreEncoder absEncoder = new AM_CAN_HexBoreEncoder(0);
     public SparkRelativeEncoder m_TurretEncoder = (SparkRelativeEncoder) m_TurretMotor.getEncoder();
     private AM_Encoder_Telemetry teleData = absEncoder.getTelemetry();
     private AM_EncoderStatus statData = absEncoder.getStatus();
