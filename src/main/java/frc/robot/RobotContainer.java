@@ -66,10 +66,10 @@ public class RobotContainer {
   private ShootCommand m_ShootCommand;
   private IntakeLiftCommand m_IntakeLiftCommand;
   public Command AutoIntakeCommand() {
-    return new IntakeCommand(m_IntakeSubsystem);
+    return new IntakeCommand(m_IntakeSubsystem).withTimeout(2.0);
   }
   public Command AutoShootCommand(){
-    return new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem);
+    return new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem).withTimeout(2.0);
   }
   
   

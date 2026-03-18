@@ -142,10 +142,10 @@ public class ShootCommand extends Command {
     m_shooterSubsystem.setIntakeSpeed(0.6);
       
       if(ticks>5){
-        m_FeederSubsystem.setFeederRightSpeed(0.5);
-        if(ticks>25
+        m_FeederSubsystem.setFeederRightSpeed(1.0);
+        if(ticks>30
         ){
-          m_FeederSubsystem.setFeederLeftSpeed(0.5);
+          m_FeederSubsystem.setFeederLeftSpeed(1.0);
         }
       }
    ticks++;
