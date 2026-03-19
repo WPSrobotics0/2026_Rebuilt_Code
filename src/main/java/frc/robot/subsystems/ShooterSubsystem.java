@@ -30,7 +30,7 @@ public class ShooterSubsystem  extends SubsystemBase {
         
     }
     public void setIntakeSpeed(double speed) {
-        m_speed = () -> speed;
+        //m_speed = () -> speed;
         m_moter.set(speed);
         //m_moter.set(m_speed.get());
         //m_IntakeMotorRight.set(-1*speed.get());

@@ -5,12 +5,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeCommand extends Command {
    private IntakeSubsystem m_intake;
-   private double m_speed=1.0;
-   private double m_Target=1.0;
+   private double m_speed=0.0;
    private double gearratio=12.0;
-   public IntakeCommand(IntakeSubsystem intake){
+   public IntakeCommand(IntakeSubsystem intake, double speed){
     addRequirements(intake);
     m_intake = intake;
+    m_speed=speed;
   
    }
     //only runs once
@@ -22,18 +22,11 @@ public class IntakeCommand extends Command {
     @Override
   public void execute() {
     m_intake.setIntakeSpeed(()->m_speed);
-  double speed = Math.abs(m_Target-m_intake.m_IntakeLiftMotorEncoder.getPosition()/gearratio);
-  double topSpeed=0.2;
-  if (speed>topSpeed){
-    speed=topSpeed;
-  }
-  SmartDashboard.putNumber("lift motor position", m_intake.m_IntakeLiftMotorEncoder.getPosition()/gearratio);
-  //m_intake.setRotate(speed);
   }
    @Override
   public void end(boolean interrupted) {
     m_intake.setIntakeSpeed(()->0.0);
-     m_intake.setRotate(()->0.0);
+    
 }
 
 

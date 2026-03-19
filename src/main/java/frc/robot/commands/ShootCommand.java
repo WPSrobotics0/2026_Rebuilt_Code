@@ -142,14 +142,14 @@ public class ShootCommand extends Command {
     m_shooterSubsystem.setIntakeSpeed(0.6);
       
       if(ticks>5){
-        m_FeederSubsystem.setFeederRightSpeed(1.0);
+        m_FeederSubsystem.setFeederRightSpeed(0.7);
         if(ticks>30
         ){
-          m_FeederSubsystem.setFeederLeftSpeed(1.0);
+          m_FeederSubsystem.setFeederLeftSpeed(0.7);
         }
       }
    ticks++;
-    if (m_tid!=-1 && m_tid!=0) {
+    /*if (m_tid!=-1 && m_tid!=0) {
       //FORWARD SPEED
       m_driveForwardTarget=forward(); 
 
@@ -158,7 +158,7 @@ public class ShootCommand extends Command {
       double ballVelocity = calcSpeed(calcDist());
       m_shootTargetSpeed =()->calcMotorVolts(ballVelocity);
       SmartDashboard.putNumber("target turret speed", m_shootTargetSpeed.get());
-      m_shooterSubsystem.setIntakeSpeed(0.4);
+      //m_shooterSubsystem.setIntakeSpeed(0.4);
       
       /*if(ticks>50){
         m_FeederSubsystem.setFeederRightSpeed(1.0);
@@ -166,13 +166,14 @@ public class ShootCommand extends Command {
           m_FeederSubsystem.setFeederLeftSpeed(1.0);
         }
           
-      }*/
+      }
       ticks++;
     }// else {
       //SmartDashboard.putBoolean("isValidId", false);
       //m_tidFound=false;
       //m_turretSubsystem.drive(0, 0, 0, true);
     //}
+    */
   }
   // Called once the command ends or is interrupted.
   @Override

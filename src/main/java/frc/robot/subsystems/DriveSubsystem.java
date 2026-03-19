@@ -140,6 +140,7 @@ public void resetPose(Pose2d pose) {
     
     @Override
     public void periodic() {
+        m_odometry.update(getAngle(), getPositions());
 
         m_ticks++;
         if (m_ticks % 15 != 7)

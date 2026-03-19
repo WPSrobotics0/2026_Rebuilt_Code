@@ -41,11 +41,11 @@ public class RotTurretCommand extends Command {
         //double noEnterEast=45.0;
         //target+=180.0;
         if((Math.abs(target-m_speed))>.05){
-          double scaleSpeed=2.0;
+          double scaleSpeed=1.5;
           m_speed=Math.abs(target-m_speed)/scaleSpeed;
 
-          if (m_speed>0.3){
-            m_speed=0.3;
+          if (m_speed>0.6){
+            m_speed=0.6;
           }
 
           if(target<(m_turret.m_TurretEncoder.getPosition()/gearRatio)){

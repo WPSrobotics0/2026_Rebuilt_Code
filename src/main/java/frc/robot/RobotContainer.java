@@ -6,7 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.TeleOpDriveCommand;
-import frc.robot.commands.RetractCommand;
+//import frc.robot.commands.RetractCommand;
 import frc.robot.commands.RotTurretCommand;
 import frc.robot.commands.alignDistanceWithTagCommand;
 import frc.robot.cwtech.Conditioning;
@@ -66,11 +66,26 @@ public class RobotContainer {
   private ShootCommand m_ShootCommand;
   private IntakeLiftCommand m_IntakeLiftCommand;
   public Command AutoIntakeCommand() {
-    return new IntakeCommand(m_IntakeSubsystem).withTimeout(2.0);
+    return new IntakeCommand(m_IntakeSubsystem, -1.0).withTimeout(1.0);
+  }
+  public Command AutoRetractCommand() {
+    return new IntakeCommand(m_IntakeSubsystem, 0.4).withTimeout(0.2);
+  }
+
+  public Command AutoIntakeLiftDownCommand() {
+    return new IntakeLiftCommand(m_IntakeSubsystem,()->0.3).withTimeout(1.0);
+  }
+  public Command AutoIntakeLiftUpCommand() {
+    return new IntakeLiftCommand(m_IntakeSubsystem,()->-0.4).withTimeout(1.0);
   }
   public Command AutoShootCommand(){
-    return new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem).withTimeout(2.0);
+    return new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem).withTimeout(4.0);
   }
+  public Command AutoRotShootCommand(){
+    return new RotTurretCommand(m_TurretSubsystem).withTimeout(3.0);
+  }
+ 
+
   
   
 
@@ -83,7 +98,12 @@ public class RobotContainer {
       public RobotContainer(Robot robot) {
     m_robot = robot;
 NamedCommands.registerCommand("Intake",AutoIntakeCommand());
+NamedCommands.registerCommand("Retract",AutoRetractCommand());
  NamedCommands.registerCommand("Shoot",AutoShootCommand());
+ NamedCommands.registerCommand("IntakeLiftDown",AutoIntakeLiftDownCommand());
+ NamedCommands.registerCommand("IntakeLiftUp",AutoIntakeLiftUpCommand());
+ NamedCommands.registerCommand("RotShoot",AutoRotShootCommand());
+
 
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -92,7 +112,7 @@ NamedCommands.registerCommand("Intake",AutoIntakeCommand());
       () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
        () -> m_robot.isTeleopEnabled(),()->fieldRelative);
     m_RotateTurretCommand = new RotateTurretCommand(m_TurretSubsystem, () -> m_subDriverController.getRightX());
-    m_IntakeLiftCommand = new IntakeLiftCommand(m_IntakeSubsystem, () -> m_subDriverController.getLeftY()/5);
+    m_IntakeLiftCommand = new IntakeLiftCommand(m_IntakeSubsystem, () -> m_subDriverController.getLeftY()/5.0);
     // Configure the trigger bindings
     configureBindings();
   }
@@ -126,8 +146,8 @@ NamedCommands.registerCommand("Intake",AutoIntakeCommand());
      m_driverController.back().onTrue(new InstantCommand(() -> m_DriveSubsystem.stopAndLockWheels()));
      //m_subDriverController.a().whileTrue(new AngleShooterCommand(m_AnglerSubsystem));
 
-     m_subDriverController.leftTrigger().whileTrue(new IntakeCommand(m_IntakeSubsystem));
-     m_subDriverController.leftTrigger().whileFalse(new RetractCommand(m_IntakeSubsystem));
+     //m_subDriverController.leftTrigger().whileTrue(new IntakeCommand(m_IntakeSubsystem));
+    // m_subDriverController.leftTrigger().whileFalse(new RetractCommand(m_IntakeSubsystem));
      //m_subDriverController.b().whileTrue(new InstantCommand(() -> m_FeederSubsystem.setFeederLeftSpeed(1.0)));
      //m_subDriverController.b().whileFalse(new InstantCommand(() -> m_FeederSubsystem.setFeederLeftSpeed(0.0)));
      //m_subDriverController.leftBumper().whileTrue(new InstantCommand(() -> m_FeederSubsystem.setFeederRightSpeed(1.0)));
