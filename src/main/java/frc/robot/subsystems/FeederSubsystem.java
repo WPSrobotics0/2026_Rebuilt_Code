@@ -16,10 +16,12 @@ public class FeederSubsystem  extends SubsystemBase {
 
     private final SparkMax m_FeederMotorLeft = new SparkMax(SubsystemConstants.kFeederLeftId, MotorType.kBrushless);
     private final SparkMax m_FeederMotorRight = new SparkMax(SubsystemConstants.kFeederRightId, MotorType.kBrushless);
+    private final SparkMax m_FlipperMotor = new SparkMax(SubsystemConstants.kFeederFlipperId, MotorType.kBrushless);
     public FeederSubsystem() {
         SparkMaxConfig liftConfig =new SparkMaxConfig();
         m_FeederMotorLeft.configure(liftConfig, ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
         m_FeederMotorRight.configure(liftConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+        m_FlipperMotor.configure(liftConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
 
     }
     @Override
@@ -29,6 +31,9 @@ public class FeederSubsystem  extends SubsystemBase {
     public void setFeederSpeed(double speed) {
         m_FeederMotorLeft.set(speed);
         m_FeederMotorRight.set(speed);
+    }
+    public void setFlipperSpeed(double speed){
+        m_FlipperMotor.set(speed);
     }
     public void setFeederLeftSpeed(double speed) {
         m_FeederMotorLeft.set(-1*speed);

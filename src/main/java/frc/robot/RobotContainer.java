@@ -16,7 +16,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterAnglerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
-import frc.robot.subsystems.SpindexerSubsystem;
+//import frc.robot.subsystems.SpindexerSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.XboxController;
@@ -31,7 +31,7 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.RotateTurretCommand;
 import frc.robot.commands.IntakeLiftCommand;
-import frc.robot.subsystems.SpindexerSubsystem;
+//import frc.robot.subsystems.SpindexerSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -54,7 +54,7 @@ public class RobotContainer {
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
  //private final ShooterAnglerSubsystem m_AnglerSubsystem = new ShooterAnglerSubsystem();
-  private final SpindexerSubsystem m_SpindexerSubsystem = new SpindexerSubsystem();
+  //private final SpindexerSubsystem m_SpindexerSubsystem = new SpindexerSubsystem();
   private final FeederSubsystem m_FeederSubsystem = new FeederSubsystem();
   private final SendableChooser<Command> autoChooser;
   private final ShooterSubsystem m_ShooterSubsystem= new ShooterSubsystem();

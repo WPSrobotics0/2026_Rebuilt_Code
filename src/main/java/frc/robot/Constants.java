@@ -75,6 +75,9 @@ public final class Constants {
     public static final int kShooterId = 7;
     public static final int kFeederLeftId = 8;
     public static final int kFeederRightId = 9;
+    public static final int kFeederFlipperId = 55;
+
+    
   }
 
   public static final class ModuleConstants {
