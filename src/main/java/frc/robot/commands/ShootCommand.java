@@ -31,6 +31,7 @@ public class ShootCommand extends Command {
   private double kSpeedKi = 0;
   private double kSpeedKd = 0;
   private int ticks;
+  private double m_speed;
   //private double kRotationKd = 0;
   
   private Supplier<Double> m_shootTargetSpeed;
@@ -43,10 +44,11 @@ public class ShootCommand extends Command {
   
   //private NetworkTable m_table;
 
-  public ShootCommand(ShooterSubsystem shooterSubsystem, FeederSubsystem feederSubsystem) {
+  public ShootCommand(ShooterSubsystem shooterSubsystem, FeederSubsystem feederSubsystem, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooterSubsystem = shooterSubsystem;
     m_FeederSubsystem=feederSubsystem;
+    m_speed=speed;
     //m_SpindexerSubsystem=spindexerSubsystem;
     addRequirements(m_shooterSubsystem, m_FeederSubsystem);
 
@@ -139,13 +141,13 @@ public class ShootCommand extends Command {
   
     SmartDashboard.putNumber(" command tid", m_tid);
 
-    m_shooterSubsystem.setIntakeSpeed(0.6);
+    m_shooterSubsystem.setIntakeSpeed(m_speed);
       
       if(ticks>5){
-        m_FeederSubsystem.setFeederRightSpeed(0.7);
-        if(ticks>30){
-          m_FeederSubsystem.setFeederLeftSpeed(0.7);
-          m_FeederSubsystem.setFlipperSpeed(-0.6);
+        m_FeederSubsystem.setFeederRightSpeed(1.0);
+        if(ticks>50){
+          m_FeederSubsystem.setFeederLeftSpeed(1.0);
+          //m_FeederSubsystem.setFlipperSpeed(-0.6);
         }
       }
    ticks++;
@@ -182,7 +184,7 @@ public class ShootCommand extends Command {
       m_shooterSubsystem.setIntakeSpeed(m_shootTargetSpeed.get());
       m_FeederSubsystem.setFeederRightSpeed(0.0);
       m_FeederSubsystem.setFeederLeftSpeed(0.0);
-      m_FeederSubsystem.setFlipperSpeed(0.0);
+      //m_FeederSubsystem.setFlipperSpeed(0.0);
 
     
     //m_turretSubsystem.setIntakeSpeed(0.0);

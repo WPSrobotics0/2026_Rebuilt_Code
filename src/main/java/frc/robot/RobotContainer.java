@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AngleShooterCommand;
+import frc.robot.commands.FlipperCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.RotateTurretCommand;
@@ -79,7 +80,7 @@ public class RobotContainer {
     return new IntakeLiftCommand(m_IntakeSubsystem,()->-0.4).withTimeout(1.0);
   }
   public Command AutoShootCommand(){
-    return new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem).withTimeout(4.0);
+    return new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,.6).withTimeout(4.0);
   }
   public Command AutoRotShootCommand(){
     return new RotTurretCommand(m_TurretSubsystem).withTimeout(3.0);
@@ -160,12 +161,15 @@ NamedCommands.registerCommand("Retract",AutoRetractCommand());
      */
      m_subDriverController.a().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> -1.0)));
      m_subDriverController.a().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.0)));
+     m_subDriverController.b().onTrue(new FlipperCommand(m_FeederSubsystem));
+     
      m_subDriverController.back().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.5)));
      m_subDriverController.back().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.0)));
      m_subDriverController.rightBumper().whileTrue(new RotTurretCommand(m_TurretSubsystem));
      //m_subDriverController.rightTrigger().whileTrue(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(0.4)));
      //m_subDriverController.rightTrigger().whileFalse(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(0.0)));
-     m_subDriverController.rightTrigger().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem));
+     //m_subDriverController.rightTrigger().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,0.55));
+     //m_subDriverController.y().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,0.5));
      //m_subDriverController.a().whileTrue(new ShootCommand(m_ShooterSubsystem));
      m_subDriverController.start().whileTrue(new InstantCommand(() -> m_FeederSubsystem.setFeederSpeed(0.2)));
      m_subDriverController.start().onFalse(new InstantCommand(() -> m_FeederSubsystem.setFeederSpeed(0.0)));
