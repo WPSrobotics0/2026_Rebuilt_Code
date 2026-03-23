@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-//import com.revrobotics.spark.SparkBase;
-
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -23,6 +21,7 @@ import edu.wpi.first.math.util.Units;
  * wherever the
  * constants are needed, to reduce verbosity.
  */
+
 public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
@@ -51,13 +50,11 @@ public final class Constants {
     public static final double kBackLeftChassisAngularOffset = Math.PI;//Math.PI / 2 + Math.PI;
     public static final double kBackRightChassisAngularOffset = Math.PI/2.0;//Math.PI;
 
-
     // SPARK MAX CAN IDs
     public static final int kFrontLeftDrivingCanId = 1;
     public static final int kRearLeftDrivingCanId = 3;
     public static final int kFrontRightDrivingCanId = 2;
     public static final int kRearRightDrivingCanId = 4;
-
     public static final int kFrontLeftTurningCanId = 11;
     public static final int kRearLeftTurningCanId = 13;
     public static final int kFrontRightTurningCanId = 12;
@@ -75,9 +72,7 @@ public final class Constants {
     public static final int kShooterId = 7;
     public static final int kFeederLeftId = 8;
     public static final int kFeederRightId = 9;
-    public static final int kFeederFlipperId = 55;
-
-    
+    public static final int kFeederFlipperId = 55; 
   }
 
   public static final class ModuleConstants {
@@ -101,14 +96,9 @@ public final class Constants {
 
     public static final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI)
         / kDrivingMotorReduction; // meters
+
     public static final double kDrivingEncoderVelocityFactor = ((kWheelDiameterMeters * Math.PI)
         / kDrivingMotorReduction) / 60.0; // meters per second
-
-    public static final double kTurningEncoderPositionFactor = (2 * Math.PI); // radians
-    public static final double kTurningEncoderVelocityFactor = (2 * Math.PI) / 60.0; // radians per second
-
-    public static final double kTurningEncoderPositionPIDMinInput = 0; // radians
-    public static final double kTurningEncoderPositionPIDMaxInput = kTurningEncoderPositionFactor; // radians
 
     public static final double kDrivingP = 0.04;
     public static final double kDrivingI = 0;
@@ -117,15 +107,16 @@ public final class Constants {
     public static final double kDrivingMinOutput = -1;
     public static final double kDrivingMaxOutput = 1;
 
+    public static final double kTurningEncoderPositionFactor = (2 * Math.PI); // radians
+    public static final double kTurningEncoderVelocityFactor = (2 * Math.PI) / 60.0; // radians per second
+    public static final double kTurningEncoderPositionPIDMinInput = 0; // radians
+    public static final double kTurningEncoderPositionPIDMaxInput = kTurningEncoderPositionFactor; // radians
     public static final double kTurningP = 1;
     public static final double kTurningI = 0;
     public static final double kTurningD = 0;
     public static final double kTurningFF = 0;
     public static final double kTurningMinOutput = -1;
     public static final double kTurningMaxOutput = 1;
-
-    //public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
-    //public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
 
     public static final int kDrivingMotorCurrentLimit = 50; // amps
     public static final int kTurningMotorCurrentLimit = 20; // amps

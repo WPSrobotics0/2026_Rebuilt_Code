@@ -6,38 +6,27 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.TeleOpDriveCommand;
-//import frc.robot.commands.RetractCommand;
 import frc.robot.commands.RotTurretCommand;
 import frc.robot.commands.alignDistanceWithTagCommand;
 import frc.robot.cwtech.Conditioning;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterAnglerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
-//import frc.robot.subsystems.SpindexerSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import edu.wpi.first.wpilibj.XboxController;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AngleShooterCommand;
 import frc.robot.commands.FlipperCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.RotateTurretCommand;
 import frc.robot.commands.IntakeLiftCommand;
-//import frc.robot.subsystems.SpindexerSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -46,26 +35,26 @@ import com.pathplanner.lib.auto.NamedCommands;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  
   private final Conditioning m_driveXConditioning = new Conditioning();
   private final Conditioning m_driveYConditioning = new Conditioning();
   private final Conditioning m_turnConditioning = new Conditioning();
 
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem m_DriveSubsystem = new DriveSubsystem();
   private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
- //private final ShooterAnglerSubsystem m_AnglerSubsystem = new ShooterAnglerSubsystem();
-  //private final SpindexerSubsystem m_SpindexerSubsystem = new SpindexerSubsystem();
   private final FeederSubsystem m_FeederSubsystem = new FeederSubsystem();
   private final SendableChooser<Command> autoChooser;
   private final ShooterSubsystem m_ShooterSubsystem= new ShooterSubsystem();
   private final TurretSubsystem m_TurretSubsystem = new TurretSubsystem();
-  public boolean fieldRelative = true;
   private final Robot m_robot;
+
   private TeleOpDriveCommand m_TeleOpDriveCommand;
   private RotateTurretCommand m_RotateTurretCommand;
-  private ShootCommand m_ShootCommand;
   private IntakeLiftCommand m_IntakeLiftCommand;
+
+  public boolean fieldRelative = true;
+
   public Command AutoIntakeCommand() {
     return new IntakeCommand(m_IntakeSubsystem, -1.0).withTimeout(1.0);
   }
@@ -85,35 +74,31 @@ public class RobotContainer {
   public Command AutoRotShootCommand(){
     return new RotTurretCommand(m_TurretSubsystem).withTimeout(3.0);
   }
- 
-
-  
-  
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public final static CommandXboxController m_driverController = new CommandXboxController(
       OIConstants.kDriverControllerPort0);
-      public final static CommandXboxController m_subDriverController = new CommandXboxController(
+  public final static CommandXboxController m_subDriverController = new CommandXboxController(
       OIConstants.kDriverControllerPort1);
-      /** The container for the robot. Contains subsystems, OI devices, and commands. */
-      public RobotContainer(Robot robot) {
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  public RobotContainer(Robot robot) {
     m_robot = robot;
-NamedCommands.registerCommand("Intake",AutoIntakeCommand());
-NamedCommands.registerCommand("Retract",AutoRetractCommand());
- NamedCommands.registerCommand("Shoot",AutoShootCommand());
- NamedCommands.registerCommand("IntakeLiftDown",AutoIntakeLiftDownCommand());
- NamedCommands.registerCommand("IntakeLiftUp",AutoIntakeLiftUpCommand());
- NamedCommands.registerCommand("RotShoot",AutoRotShootCommand());
 
+    NamedCommands.registerCommand("Intake",AutoIntakeCommand());
+    NamedCommands.registerCommand("Retract",AutoRetractCommand());
+    NamedCommands.registerCommand("Shoot",AutoShootCommand());
+    NamedCommands.registerCommand("IntakeLiftDown",AutoIntakeLiftDownCommand());
+    NamedCommands.registerCommand("IntakeLiftUp",AutoIntakeLiftUpCommand());
+    NamedCommands.registerCommand("RotShoot",AutoRotShootCommand());
 
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
-     m_TeleOpDriveCommand=new TeleOpDriveCommand(m_DriveSubsystem,
-      () -> getDriveXInput(), () -> getDriveYInput(), () -> getTurnInput(),
-       () -> m_robot.isTeleopEnabled(),()->fieldRelative);
+    m_TeleOpDriveCommand=new TeleOpDriveCommand(m_DriveSubsystem,() -> getDriveXInput(), 
+      () -> getDriveYInput(), () -> getTurnInput(),() -> m_robot.isTeleopEnabled(),()->fieldRelative);
     m_RotateTurretCommand = new RotateTurretCommand(m_TurretSubsystem, () -> m_subDriverController.getRightX());
     m_IntakeLiftCommand = new IntakeLiftCommand(m_IntakeSubsystem, () -> m_subDriverController.getLeftY()/5.0);
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -127,16 +112,11 @@ NamedCommands.registerCommand("Retract",AutoRetractCommand());
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  
   private void configureBindings() {
     
-
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    
-    m_driverController.start().onTrue(new
-      InstantCommand(()->m_DriveSubsystem.zeroHeading()));
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    m_driverController.start().onTrue(new InstantCommand(()->m_DriveSubsystem.zeroHeading()));
     m_DriveSubsystem.setDefaultCommand(m_TeleOpDriveCommand);
     m_driverController.a().onTrue(new alignDistanceWithTagCommand(m_DriveSubsystem));
     m_driverController.y().onTrue(new InstantCommand(() -> fieldRelative = false));
@@ -145,34 +125,18 @@ NamedCommands.registerCommand("Retract",AutoRetractCommand());
      m_driverController.rightBumper().whileTrue(new InstantCommand(() -> m_speedMultiplier = 0.5));
      m_driverController.rightBumper().whileFalse(new InstantCommand(() -> m_speedMultiplier = 1.0));
      m_driverController.back().onTrue(new InstantCommand(() -> m_DriveSubsystem.stopAndLockWheels()));
-     //m_subDriverController.a().whileTrue(new AngleShooterCommand(m_AnglerSubsystem));
 
-     //m_subDriverController.leftTrigger().whileTrue(new IntakeCommand(m_IntakeSubsystem));
-    // m_subDriverController.leftTrigger().whileFalse(new RetractCommand(m_IntakeSubsystem));
-     //m_subDriverController.b().whileTrue(new InstantCommand(() -> m_FeederSubsystem.setFeederLeftSpeed(1.0)));
-     //m_subDriverController.b().whileFalse(new InstantCommand(() -> m_FeederSubsystem.setFeederLeftSpeed(0.0)));
-     //m_subDriverController.leftBumper().whileTrue(new InstantCommand(() -> m_FeederSubsystem.setFeederRightSpeed(1.0)));
-     //m_subDriverController.leftBumper().whileFalse(new InstantCommand(() -> m_FeederSubsystem.setFeederRightSpeed(0.0)));
-     /*
-     m_subDriverController.y().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setRotate(-0.3)));
-     m_subDriverController.y().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setRotate(0.0)));
-     m_subDriverController.x().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setRotate(0.1)));
-     m_subDriverController.x().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setRotate(0.0)));
-     */
      m_subDriverController.a().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> -1.0)));
      m_subDriverController.a().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.0)));
      m_subDriverController.b().onTrue(new FlipperCommand(m_FeederSubsystem));
-     
      m_subDriverController.back().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.5)));
      m_subDriverController.back().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.0)));
      m_subDriverController.rightBumper().whileTrue(new RotTurretCommand(m_TurretSubsystem));
-     //m_subDriverController.rightTrigger().whileTrue(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(0.4)));
-     //m_subDriverController.rightTrigger().whileFalse(new InstantCommand(() -> m_ShooterSubsystem.setIntakeSpeed(0.0)));
      //m_subDriverController.rightTrigger().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,0.55));
      //m_subDriverController.y().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,0.5));
-     //m_subDriverController.a().whileTrue(new ShootCommand(m_ShooterSubsystem));
      m_subDriverController.start().whileTrue(new InstantCommand(() -> m_FeederSubsystem.setFeederSpeed(0.2)));
      m_subDriverController.start().onFalse(new InstantCommand(() -> m_FeederSubsystem.setFeederSpeed(0.0)));
+ 
      m_TurretSubsystem.setDefaultCommand(m_RotateTurretCommand);
      m_IntakeSubsystem.setDefaultCommand(m_IntakeLiftCommand);
   }
@@ -185,7 +149,7 @@ NamedCommands.registerCommand("Retract",AutoRetractCommand());
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
   return autoChooser.getSelected();  
-}
+  }
 
   public void initalize()
   {
@@ -193,26 +157,27 @@ NamedCommands.registerCommand("Retract",AutoRetractCommand());
   }
 
   private double m_speedMultiplier = 1.0;
+
   public double getDriveXInput()
   {
     // We getY() here because of the FRC coordinate system being turned 90 degrees
     return m_driveXConditioning.condition(-m_driverController.getLeftY())
-            * DriveSubsystem.kMaxSpeedMetersPerSecond
-            * m_speedMultiplier;
+      * DriveSubsystem.kMaxSpeedMetersPerSecond
+      * m_speedMultiplier;
   }
 
   public double getDriveYInput()
   {
     // We getX() here becasuse of the FRC coordinate system being turned 90 degrees
     return m_driveYConditioning.condition(-m_driverController.getLeftX())
-            * DriveSubsystem.kMaxSpeedMetersPerSecond
-            * m_speedMultiplier;
+      * DriveSubsystem.kMaxSpeedMetersPerSecond
+      * m_speedMultiplier;
   }
 
   public double getTurnInput()
   {
     return m_turnConditioning.condition(-m_driverController.getRightX())
-            * DriveSubsystem.kMaxAngularSpeedRadiansPerSecond
-            * m_speedMultiplier;
+      * DriveSubsystem.kMaxAngularSpeedRadiansPerSecond
+      * m_speedMultiplier;
   }
 }

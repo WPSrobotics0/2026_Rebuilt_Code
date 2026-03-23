@@ -5,7 +5,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 
-import java.util.function.Supplier;
 
 //import com.revrobotics.PersistMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,13 +16,11 @@ public class FeederSubsystem  extends SubsystemBase {
     private final SparkMax m_FeederMotorLeft = new SparkMax(SubsystemConstants.kFeederLeftId, MotorType.kBrushless);
     private final SparkMax m_FeederMotorRight = new SparkMax(SubsystemConstants.kFeederRightId, MotorType.kBrushless);
     private final SparkMax m_FlipperMotor = new SparkMax(SubsystemConstants.kFeederFlipperId, MotorType.kBrushless);
-    private int flipperTicks;
     public FeederSubsystem() {
         SparkMaxConfig liftConfig =new SparkMaxConfig();
         m_FeederMotorLeft.configure(liftConfig, ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
         m_FeederMotorRight.configure(liftConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
         m_FlipperMotor.configure(liftConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
-        flipperTicks=0;
 
     }
     @Override

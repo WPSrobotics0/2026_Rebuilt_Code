@@ -42,8 +42,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     private boolean m_initalized = false;
 
-   
-
     private double m_Goffset = 0.0;
 
     public static final double kMaxSpeedMetersPerSecond = 4;
@@ -96,7 +94,7 @@ public class DriveSubsystem extends SubsystemBase {
       e.printStackTrace();
 
     }
-        smartDashboardInit();
+        
     }public ChassisSpeeds getRobotRelativeSpeeds()
     {
         return DriveConstants.kDriveKinematics.toChassisSpeeds(
@@ -149,32 +147,10 @@ public void resetPose(Pose2d pose) {
         SmartDashboard.putNumber(getName() + "/Angle", getAngle().getDegrees());
         SmartDashboard.putNumber(getName() + "/Goffset", m_Goffset);
         SmartDashboard.putNumber(getName() + "/Angle + Goffset", getAngle().getDegrees() + m_Goffset);
-        // SmartDashboard.putNumber(getName() + "/Roll", m_navX.getRoll());
-        // SmartDashboard.putNumber(getName() + "/Pitch", m_navX.getPitch());
+        SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
         
-        // var botPose = LimelightHelpers.getBotPose2d("limelight-swtech");
-        // SmartDashboard.putNumber(getName() + "/April Tag ID", botpose);
-        // SmartDashboard.putNumber(getName() + "/Distance X", botpose.getX());
-        // SmartDashboard.putNumber(getName() + "/Distance Y", botpose.getY());
-        // SmartDashboard.putNumber(getName() + "/Distance Z", botpose.getZ());
-
-        smartDashboardUpdate();
     }
-
-    public void smartDashboardInit() {
-        m_frontLeft.smartDashboardInit();
-        m_frontRight.smartDashboardInit();
-        m_backLeft.smartDashboardInit();
-        m_backRight.smartDashboardInit();
-    }
-
-    public void smartDashboardUpdate() {
-        m_frontLeft.smartDashboardUpdate();
-        m_frontRight.smartDashboardUpdate();
-        m_backLeft.smartDashboardUpdate();
-        m_backRight.smartDashboardUpdate();
-    }
-
+    
     private void driveRobotRelative(ChassisSpeeds chassisSpeeds)
     {
         drive(m_kinematics.toSwerveModuleStates(chassisSpeeds));

@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
@@ -24,7 +23,6 @@ public class SwerveModuleCanCoder {
     private static final double kSteerP = 0.4;
     private static final double kSteerI = 0.00001;
     private static final double kSteerD = 0.0;
-    // private static final double kSteerFF = 0.0;
     private static final double kSteerIZone = 1.0;
 
     private SparkMax m_driveMotor;
@@ -38,10 +36,7 @@ public class SwerveModuleCanCoder {
     private SparkClosedLoopController m_steerPIDController;
     private final double m_steerOffset;
     private final String m_name;
-
-    // measured circumference as 12.375 inches = radius 1.97
-    // private static final double kWheelRadius = 1.90 * 0.0254; // 2" * 0.0254 m / inch
-    // private static final double kDrivePositionFactor = (2.0 * Math.PI * kWheelRadius * kGearboxRatio);
+    
     private static final double kGearboxRatio = 1.0 / 6.12; // One turn of the wheel is 6.86 turns of the motor
     private static final double kWheelCircumference = 0.3; // m
     private static final double kDrivePositionFactor = kWheelCircumference * kGearboxRatio;
@@ -55,15 +50,13 @@ public class SwerveModuleCanCoder {
     }
 
     // https://github.com/Team364/BaseFalconSwerve/blob/main/src/main/java/frc/robot/SwerveModule.java
+    @SuppressWarnings("removal")
     private SwerveModuleCanCoder(int driveMotor, int steerMotor, int steerAbsoluteEncoder, double steerOffset, String name)
     {
         m_driveMotor = new SparkMax(driveMotor, SparkMax.MotorType.kBrushless);
         m_steerMotor = new SparkMax(steerMotor, SparkMax.MotorType.kBrushless);
-        // m_driveMotor.restoreFactoryDefaults();
-        // m_steerMotor.restoreFactoryDefaults();
 
         m_name = name;
-
         m_steerOffset = steerOffset;
 
         m_steerAbsoluteEncoder = new CANcoder(steerAbsoluteEncoder);
@@ -111,42 +104,6 @@ public class SwerveModuleCanCoder {
         m_steerPIDController = m_steerMotor.getClosedLoopController();
     }
 
-    public void smartDashboardInit() {
-        SmartDashboard.putNumber(m_name + "/Steer Motor Position", getRelativeEncoderPosition().getDegrees());
-        SmartDashboard.putNumber(m_name + "/Steer Absolute Position", getAbsoluteEncoderPosition().getDegrees());
-        SmartDashboard.putNumber(m_name + "/Steer Absolute Position Raw", 0);
-        // SmartDashboard.putNumber(m_name + "/Drive P", m_drivePIDController.getP());
-        // SmartDashboard.putNumber(m_name + "/Drive I", m_drivePIDController.getI());
-        // SmartDashboard.putNumber(m_name + "/Drive D", m_drivePIDController.getD());
-        // SmartDashboard.putNumber(m_name + "/Drive IZone", m_drivePIDController.getIZone());
-        // SmartDashboard.putNumber(m_name + "/Drive FF", m_drivePIDController.getFF());
-        // SmartDashboard.putNumber(m_name + "/Steer P", m_steerPIDController.getP());
-        // SmartDashboard.putNumber(m_name + "/Steer I", m_steerPIDController.getI());
-        // SmartDashboard.putNumber(m_name + "/Steer D", m_steerPIDController.getD());
-        // SmartDashboard.putNumber(m_name + "/Steer IZone", m_steerPIDController.getIZone());
-        // SmartDashboard.putNumber(m_name + "/Steer FF", m_steerPIDController.getFF());
-    }
-
-    public void smartDashboardUpdate() {
-        // SmartDashboard.putNumber(m_name + "/Drive Encoder Velocity", m_driveEncoder.getVelocity());
-        // SmartDashboard.putNumber(m_name + "/Drive Encoder Position", m_driveEncoder.getPosition()); 
-        SmartDashboard.putNumber(m_name + "/Steer Motor Position", getRelativeEncoderPosition().getDegrees() % 360);
-        SmartDashboard.putNumber(m_name + "/Steer Absolute Position", getAbsoluteEncoderPosition().getDegrees());
-        SmartDashboard.putNumber(m_name + "/Steer Absolute Position Raw", getCanCoder().getDegrees());
-
-    //    m_drivePIDController.setP (SmartDashboard.getNumber(m_name + "/Drive P", kDriveP));
-    //    m_drivePIDController.setI (SmartDashboard.getNumber(m_name + "/Drive I", kDriveI));
-    //    m_drivePIDController.setD (SmartDashboard.getNumber(m_name + "/Drive D", kDriveD));
-    //    m_drivePIDController.setIZone (SmartDashboard.getNumber(m_name + "/Drive IZone", kDriveIZone));
-    //    m_drivePIDController.setFF (SmartDashboard.getNumber(m_name + "/Drive FF", kDriveFF));
-
-    //    m_steerPIDController.setP (SmartDashboard.getNumber(m_name + "/Steer P", kSteerP));
-    //    m_steerPIDController.setI (SmartDashboard.getNumber(m_name + "/Steer I", kSteerI));
-    //    m_steerPIDController.setD (SmartDashboard.getNumber(m_name + "/Steer D", kSteerD));
-    //    m_steerPIDController.setIZone (SmartDashboard.getNumber(m_name + "/Steer IZone", kSteerIZone));
-    //    m_steerPIDController.setFF (SmartDashboard.getNumber(m_name + "/Steer FF", kSteerFF));
-    }
-
     private Rotation2d getCanCoder()
     {
         double rotations = m_steerAbsoluteEncoder.getAbsolutePosition().getValueAsDouble();
@@ -161,8 +118,7 @@ public class SwerveModuleCanCoder {
     {
         double startingAngle = m_steerOffset - getCanCoder().getDegrees();
     
-        if (startingAngle < 0)
-        {
+        if (startingAngle < 0){
           startingAngle = startingAngle + 360;
         }
 
@@ -236,8 +192,7 @@ public class SwerveModuleCanCoder {
     {
         //we put that the difference should be less than 0.025 which is approximately 0.5% margin of error
         // 0.025 radians is ~ 1.5 degrees
-        if (Math.abs(getAbsoluteEncoderPosition().getRadians() - getRelativeEncoderPosition().getRadians()) > 0.025)
-        {
+        if (Math.abs(getAbsoluteEncoderPosition().getRadians() - getRelativeEncoderPosition().getRadians()) > 0.025){
             resetAngleEncoderToAbsolute();
         }
     }

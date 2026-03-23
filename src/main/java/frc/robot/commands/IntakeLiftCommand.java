@@ -5,52 +5,59 @@ import java.util.function.Supplier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
+
 public class IntakeLiftCommand extends Command {
-   private IntakeSubsystem m_intake;
-   private Supplier<Double> m_speed = () -> 0.0;
-   private Supplier<Double> m_leftY;
-   public IntakeLiftCommand(IntakeSubsystem Intake, Supplier<Double> leftY){
+
+  private IntakeSubsystem m_intake;
+  private Supplier<Double> m_leftY;
+  public IntakeLiftCommand(IntakeSubsystem Intake, Supplier<Double> leftY){
     addRequirements(Intake);
     m_intake = Intake;
     m_leftY=leftY;
+  }
     
-   }
-    //only runs once
-    @Override
-    public void initialize() {
-      m_intake.setRotate(m_leftY);
-    }
-//everyt time it is ran
-    @Override
+  @Override
+  public void initialize() {
+    m_intake.setRotate(m_leftY);
+  }
+
+  @Override
   public void execute() {
-    //m_intake.setRotate(m_leftY);
-    if((m_intake.m_IntakeLiftMotorEncoder.getPosition() > -3.0) && (m_intake.m_IntakeLiftMotorEncoder.getPosition() < 7.0)){
+    double lowerBound=-3.0;
+    double upperBound=7.0;
+    if((m_intake.m_IntakeLiftMotorEncoder.getPosition() > lowerBound) && (m_intake.m_IntakeLiftMotorEncoder.getPosition() < upperBound)){
       m_intake.setRotate(m_leftY);
-    } else if(m_intake.m_IntakeLiftMotorEncoder.getPosition() < -1.0){
+    } 
+    else if(m_intake.m_IntakeLiftMotorEncoder.getPosition() < lowerBound){
       if(m_leftY.get() < -0.05){
         m_intake.setRotate(()->0.0);
-      } else{
+      } 
+      else{
         m_intake.setRotate(m_leftY);
       }
-    } else if(m_intake.m_IntakeLiftMotorEncoder.getPosition() > 7.0){
+    } 
+    else if(m_intake.m_IntakeLiftMotorEncoder.getPosition() > upperBound){
       if(m_leftY.get() > 0.05){
         m_intake.setRotate(()->0.0);
-      } else{
+      } 
+      else{
         m_intake.setRotate(m_leftY);
       }
-    
-    } else{
+    } 
+    else{
       m_intake.setRotate(()->0.0);
     }
     
     SmartDashboard.putNumber("lift motor position", m_intake.m_IntakeLiftMotorEncoder.getPosition());
     SmartDashboard.putNumber("subDrive LeftY", m_leftY.get());
   }
-   @Override
+
+  @Override
   public void end(boolean interrupted) {
     m_intake.setRotate(()->0.0);
-}
-   @Override
+  }
+
+  @Override
   public boolean isFinished() {
     return false;
   }

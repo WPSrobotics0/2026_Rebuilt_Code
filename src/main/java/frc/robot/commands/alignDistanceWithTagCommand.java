@@ -13,10 +13,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightHelpers;
 import edu.wpi.first.math.controller.PIDController;
+
 public class alignDistanceWithTagCommand extends Command {
 
-
   private DriveSubsystem m_driveSubsystem;
+
   private double m_targetZ; 
   //private double m_targetX;
   private double m_targetRotation;
@@ -29,14 +30,16 @@ public class alignDistanceWithTagCommand extends Command {
   private double kRotationKi = 0;
   private double kSpeedKd = 0;
   private double kRotationKd = 0;
-
   private double m_driveRotTarget;
   private double m_driveForwardTarget;
+
+  private boolean m_tidFound = false;
+
   PIDController m_rotationController = new PIDController(kRotationKp, kRotationKi, kRotationKd);
   PIDController m_xSpeedController = new PIDController(kSpeedKp, kSpeedKi, kSpeedKd);
   PIDController m_zSpeedController = new PIDController(kSpeedKp, kSpeedKi, kSpeedKd);
 
-  private boolean m_tidFound = false;
+  
 
   
   // private NetworkTable m_table;
@@ -45,17 +48,12 @@ public class alignDistanceWithTagCommand extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     m_driveSubsystem = driveSubsystem;
 
-    addRequirements(m_driveSubsystem);
-
-    //NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    //m_table = inst.getTable("ReefAlignment");
-   
+    addRequirements(m_driveSubsystem);   
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //m_table=NetworkTableInstance.getDefault().getTable("limelight");
     double tid = LimelightHelpers.getFiducialID("limelight");
     m_tid=tid;
     
@@ -68,10 +66,7 @@ public class alignDistanceWithTagCommand extends Command {
       return;
     }
     //tweak on a per id basis, just a generic value for april tag
-    m_targetZ =0;
-
-    
-
+    m_targetZ = 0;
     m_xSpeedController.setSetpoint(m_targetZ);
     m_zSpeedController.setSetpoint(m_targetZ);
     m_rotationController.setSetpoint(m_targetRotation);
@@ -97,16 +92,12 @@ public class alignDistanceWithTagCommand extends Command {
   public void execute() {
 
     m_tid = LimelightHelpers.getFiducialID("limelight");
-  
     SmartDashboard.putNumber(" command tid", m_tid);
    
     if (m_tid!=-1 && m_tid!=0) {
-    
-
-     
+      
       //rotSpeed
       m_driveRotTarget=rotate();
-     
 
       //FORWARD SPEED
       m_driveForwardTarget=forward(); 
@@ -116,10 +107,10 @@ public class alignDistanceWithTagCommand extends Command {
       SmartDashboard.putNumber("drivespeed", m_driveForwardTarget);
 
       if(Math.abs(m_targetRotation-m_driveRotTarget )>0.05){
-          m_driveSubsystem.drive( 0, 0, m_driveRotTarget, false);
+        m_driveSubsystem.drive( 0, 0, m_driveRotTarget, false);
       }
       else{
-          m_driveSubsystem.drive(-1* m_driveForwardTarget, 0, 0, false);
+        m_driveSubsystem.drive(-1* m_driveForwardTarget, 0, 0, false);
       }
     
     } else {
