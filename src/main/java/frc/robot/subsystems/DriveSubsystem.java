@@ -31,13 +31,17 @@ import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
     private SwerveModuleCanCoder m_frontLeft= new SwerveModuleCanCoder(1, 21,
-                135.65, "Front Left");
+                134.425, "Front Left");
+                //135.65
     private SwerveModuleCanCoder m_frontRight= new SwerveModuleCanCoder(2, 22,
-                87.95, "Front Right");
+                87.49, "Front Right");
+                //87.95
     private SwerveModuleCanCoder m_backLeft = new SwerveModuleCanCoder(3,23,
-                106.85, "Back Left");
+                108.05, "Back Left");
+                //106.85
     private SwerveModuleCanCoder m_backRight = new SwerveModuleCanCoder(4, 24,
-                158.25, "Back Right");
+                159.0, "Back Right");
+                //158.25
     private AHRS m_navX = new AHRS(NavXComType.kMXP_SPI);
 
     private boolean m_initalized = false;
@@ -135,11 +139,16 @@ public void resetPose(Pose2d pose) {
         m_backRight.resetAngleEncoderToAbsolute();
     }
 
-    
+    public void smartDashboardUpdate() {
+        m_frontLeft.smartDashboardUpdate();
+        m_frontRight.smartDashboardUpdate();
+        m_backLeft.smartDashboardUpdate();
+        m_backRight.smartDashboardUpdate();
+    }
     @Override
     public void periodic() {
         m_odometry.update(getAngle(), getPositions());
-
+        smartDashboardUpdate();
         m_ticks++;
         if (m_ticks % 15 != 7)
             return;

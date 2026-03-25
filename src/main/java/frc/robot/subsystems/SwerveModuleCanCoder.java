@@ -48,7 +48,12 @@ public class SwerveModuleCanCoder {
     {
         this(motorAssembly, motorAssembly + 10, steerAbsoluteEncoder, steerOffset, name);
     }
-
+    public void smartDashboardUpdate() {
+        SmartDashboard.putNumber(m_name + "/Steer Motor Position", getRelativeEncoderPosition().getDegrees() % 360);
+        SmartDashboard.putNumber(m_name + "/Steer Absolute Position", getAbsoluteEncoderPosition().getDegrees());
+        SmartDashboard.putNumber(m_name + "/Steer Absolute Position Raw", getCanCoder().getDegrees());
+    }
+    
     // https://github.com/Team364/BaseFalconSwerve/blob/main/src/main/java/frc/robot/SwerveModule.java
     @SuppressWarnings("removal")
     private SwerveModuleCanCoder(int driveMotor, int steerMotor, int steerAbsoluteEncoder, double steerOffset, String name)

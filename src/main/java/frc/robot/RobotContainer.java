@@ -132,8 +132,8 @@ public class RobotContainer {
      m_subDriverController.back().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.5)));
      m_subDriverController.back().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.0)));
      m_subDriverController.rightBumper().whileTrue(new RotTurretCommand(m_TurretSubsystem));
-     //m_subDriverController.rightTrigger().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,0.55));
-     //m_subDriverController.y().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,0.5));
+     m_subDriverController.rightTrigger().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,0.55));
+     m_subDriverController.y().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,0.5));
      m_subDriverController.start().whileTrue(new InstantCommand(() -> m_FeederSubsystem.setFeederSpeed(0.2)));
      m_subDriverController.start().onFalse(new InstantCommand(() -> m_FeederSubsystem.setFeederSpeed(0.0)));
  
