@@ -30,15 +30,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
-    private SwerveModuleCanCoder m_frontLeft= new SwerveModuleCanCoder(1, 21,
-                135.65, "Front Left");
-    private SwerveModuleCanCoder m_frontRight= new SwerveModuleCanCoder(2, 22,
-                87.95, "Front Right");
-    private SwerveModuleCanCoder m_backLeft = new SwerveModuleCanCoder(3,23,
-                106.85, "Back Left");
-    private SwerveModuleCanCoder m_backRight = new SwerveModuleCanCoder(4, 24,
-                158.25, "Back Right");
-    private AHRS m_navX = new AHRS(NavXComType.kMXP_SPI);
+    private SwerveModuleCanCoder m_frontLeft;
+    private SwerveModuleCanCoder m_frontRight;
+    private SwerveModuleCanCoder m_backLeft;
+    private SwerveModuleCanCoder m_backRight;
+    private AHRS m_navX;
 
     private boolean m_initalized = false;
 
@@ -52,18 +48,32 @@ public class DriveSubsystem extends SubsystemBase {
     private final Translation2d kFrontRightLocation = new Translation2d(kHalfTrackWidthMeters, -kHalfTrackWidthMeters);
     private final Translation2d kBackLeftLocation = new Translation2d(-kHalfTrackWidthMeters, kHalfTrackWidthMeters);
     private final Translation2d kBackRightLocation = new Translation2d(-kHalfTrackWidthMeters, -kHalfTrackWidthMeters);
- private SwerveDriveKinematics m_kinematics= new SwerveDriveKinematics(kFrontLeftLocation, kFrontRightLocation, kBackLeftLocation,
-                kBackRightLocation);
-    private SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle(), getPositions());
+ private SwerveDriveKinematics m_kinematics;
+    private SwerveDriveOdometry m_odometry;
 
     public int m_ticks = 0;
 
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem()
-    { HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
-    RobotConfig config;
+    { 
+    m_navX = new AHRS(NavXComType.kMXP_SPI);
+
+    m_frontLeft= new SwerveModuleCanCoder(1, 21,
+                135.65, "Front Left");
+    m_frontRight= new SwerveModuleCanCoder(2, 22,
+                87.95, "Front Right");
+     m_backLeft = new SwerveModuleCanCoder(3,23,
+                106.85, "Back Left");
+    m_backRight = new SwerveModuleCanCoder(4, 24,
+                158.25, "Back Right");
+    m_kinematics= new SwerveDriveKinematics(kFrontLeftLocation, kFrontRightLocation, kBackLeftLocation,
+                kBackRightLocation);
+     m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle(), getPositions());
+
+    HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
+    
     try{
-      config = RobotConfig.fromGUISettings();
+      var config = RobotConfig.fromGUISettings();
     
      // Configure AutoBuilder last
     AutoBuilder.configure(

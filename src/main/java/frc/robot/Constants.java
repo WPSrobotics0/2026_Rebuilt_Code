@@ -142,6 +142,46 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
+    public static final class JetsonConstants {
+    // NetworkTables paths
+    public static final String kTableName = "jetson";
+    public static final String kFuelTableName = "jetson/fuel";
+    public static final String kPoseTableName = "jetson/pose";
+
+    // Camera mounting (tune these to your actual camera placement)
+    public static final double kCameraHeightMeters = 0.3;
+    public static final double kCameraPitchRadians = Math.toRadians(-15.0);
+
+    // FUEL collection parameters
+    public static final double kFuelCollectDistanceMeters = 0.5;
+    public static final double kFuelAlignToleranceDegrees = 3.0;
+    public static final double kFuelSteerKp = 0.02;
+    public static final double kFuelDriveKp = 0.8;
+
+    // ALLIANCE SHIFT timing
+    public static final double kShiftPeriodSeconds = 25.0;
+    public static final double kTransitionShiftSeconds = 10.0;
+    public static final double kEndGameSeconds = 30.0;
+    public static final double kAutoSeconds = 20.0;
+
+    // Vision pose estimation trust (standard deviations)
+    public static final double kVisionStdDevX = 0.5;
+    public static final double kVisionStdDevY = 0.5;
+    public static final double kVisionStdDevTheta = Math.toRadians(10.0);
+
+    // HUB field positions (meters from field origin, blue alliance)
+    // Adjust these to match actual REBUILT field layout
+    public static final double kBlueHubX = 4.03;
+    public static final double kBlueHubY = 4.0;
+    public static final double kRedHubX = 12.5;
+    public static final double kRedHubY = 4.0;
+
+    // Shooter lookup table distances (meters) and corresponding speeds (RPM)
+    public static final double[] kShooterDistances = {1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 5.0, 6.0};
+    public static final double[] kShooterSpeeds =    {2000, 2500, 3000, 3400, 3800, 4200, 4800, 5200};
+    public static final double[] kShooterAngles =    {55.0, 50.0, 45.0, 40.0, 37.0, 34.0, 30.0, 27.0};
+  }
+
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;

@@ -6,11 +6,13 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.TeleOpDriveCommand;
+//import frc.robot.commands.VisionShootCommand;
 import frc.robot.commands.RotTurretCommand;
 import frc.robot.commands.alignDistanceWithTagCommand;
 import frc.robot.cwtech.Conditioning;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+//import frc.robot.subsystems.JetsonSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -35,7 +37,7 @@ import com.pathplanner.lib.auto.NamedCommands;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  
+
   private final Conditioning m_driveXConditioning = new Conditioning();
   private final Conditioning m_driveYConditioning = new Conditioning();
   private final Conditioning m_turnConditioning = new Conditioning();
@@ -48,7 +50,7 @@ public class RobotContainer {
   private final ShooterSubsystem m_ShooterSubsystem= new ShooterSubsystem();
   private final TurretSubsystem m_TurretSubsystem = new TurretSubsystem();
   private final Robot m_robot;
-
+  //private final JetsonSubsystem m_JetsonSubsystem = new JetsonSubsystem();
   private TeleOpDriveCommand m_TeleOpDriveCommand;
   private RotateTurretCommand m_RotateTurretCommand;
   private IntakeLiftCommand m_IntakeLiftCommand;
@@ -125,7 +127,9 @@ public class RobotContainer {
      m_driverController.rightBumper().whileTrue(new InstantCommand(() -> m_speedMultiplier = 0.5));
      m_driverController.rightBumper().whileFalse(new InstantCommand(() -> m_speedMultiplier = 1.0));
      m_driverController.back().onTrue(new InstantCommand(() -> m_DriveSubsystem.stopAndLockWheels()));
-
+    //m_subDriverController.leftBumper().whileTrue(
+    //     new VisionShootCommand(m_JetsonSubsystem, m_ShooterSubsystem,
+    //      m_TurretSubsystem,m_DriveSubsystem));
      m_subDriverController.a().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> -1.0)));
      m_subDriverController.a().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.0)));
      m_subDriverController.b().onTrue(new FlipperCommand(m_FeederSubsystem));
