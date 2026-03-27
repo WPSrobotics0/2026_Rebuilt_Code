@@ -119,7 +119,7 @@ public class ShootCommand extends Command {
       m_FeederSubsystem.setFeederRightSpeed(1.0);
       if(ticks>50){
         m_FeederSubsystem.setFeederLeftSpeed(1.0);
-        m_FeederSubsystem.setFlipperSpeed(-1.0);
+        m_FeederSubsystem.setFlipperSpeed(1.0);
       }
     }
     ticks++;

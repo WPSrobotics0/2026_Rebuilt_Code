@@ -152,7 +152,7 @@ public class RobotContainer {
      m_subDriverController.rightTrigger().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,5000));
      //m_subDriverController.rightTrigger().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,0.625));
      //m_subDriverController.y().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,0.55));
-
+    m_subDriverController.b().whileTrue( new alignDistanceWithTagCommand(m_DriveSubsystem));
      m_subDriverController.y().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem, 4850));
      m_subDriverController.x().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem, 5600));
      m_subDriverController.start().whileTrue(new InstantCommand(() -> m_FeederSubsystem.setFeederSpeed(0.2)));

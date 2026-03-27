@@ -75,14 +75,17 @@ public class alignDistanceWithTagCommand extends Command {
   }
 
   private double rotate(){
+    //80 degs so 40 degs per side
     double kP=.035;
     m_Rotation=LimelightHelpers.getTX("limelight") *kP;
 
     return m_rotationController.calculate(m_Rotation)*(Math.PI);
   }
   private double forward(){
+    //56 degs so 28 degs per side
     double kP=.1;
-    m_Forward=LimelightHelpers.getTY("limelight") *kP;
+    double offset=0.2;
+    m_Forward=(LimelightHelpers.getTY("limelight") *kP)+offset;
 
     return m_xSpeedController.calculate(m_Forward)*(1);
   }
@@ -105,13 +108,23 @@ public class alignDistanceWithTagCommand extends Command {
       SmartDashboard.putBoolean("isValidId", true);
       SmartDashboard.putNumber("rotError", Math.abs(m_targetRotation-m_driveRotTarget));
       SmartDashboard.putNumber("drivespeed", m_driveForwardTarget);
+      
+      if(Math.abs(m_driveForwardTarget)>0.02 || Math.abs(m_targetRotation-m_driveRotTarget )>0.1){
+        SmartDashboard.putBoolean("Done Positioning", false);
+      }
+      else{
+        SmartDashboard.putBoolean("Done Positioning", true);
 
-      if(Math.abs(m_targetRotation-m_driveRotTarget )>0.05){
+      }
+      if(Math.abs(m_targetRotation-m_driveRotTarget )>0.1){
+        m_driveRotTarget*=4.0;
         m_driveSubsystem.drive( 0, 0, m_driveRotTarget, false);
       }
       else{
+        m_driveForwardTarget*=8.0;
         m_driveSubsystem.drive(-1* m_driveForwardTarget, 0, 0, false);
       }
+      
     
     } else {
       SmartDashboard.putBoolean("isValidId", false);

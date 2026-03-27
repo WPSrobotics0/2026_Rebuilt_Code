@@ -22,7 +22,7 @@ public class ShooterSubsystem  extends SubsystemBase {
         SparkMaxConfig moterConfig =new SparkMaxConfig();
         //tune later
         moterConfig.smartCurrentLimit(60).idleMode(IdleMode.kBrake).inverted(false).closedLoop
-        .p(0.0003).i(0).d(0).maxMotion.cruiseVelocity(5000).maxAcceleration(15000)
+        .p(0.0003).i(0).d(0).maxMotion.cruiseVelocity(5000).maxAcceleration(17500)
         .allowedProfileError(1);
         m_moter.configure(moterConfig, ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
         
@@ -40,6 +40,6 @@ public class ShooterSubsystem  extends SubsystemBase {
     public void setIntakeSpeed(double speed) {
         //m_moter.set(speed);
         moterController.setSetpoint(speed, ControlType.kMAXMotionVelocityControl, ClosedLoopSlot.kSlot0);
-        SmartDashboard.putNumber("speed Incrementer for shooter", speed);
+        //SmartDashboard.putNumber("speed Incrementer for shooter", speed);
     }    
 }
