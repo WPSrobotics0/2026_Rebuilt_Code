@@ -14,11 +14,13 @@ import frc.robot.Constants.SubsystemConstants;
 public class IntakeSubsystem  extends SubsystemBase {
 
     private final SparkMax m_IntakeLiftMotor = new SparkMax(SubsystemConstants.kIntakeLiftId, MotorType.kBrushless);
+    private final SparkMax m_IntakeMotor = new SparkMax(SubsystemConstants.kIntakeId, MotorType.kBrushless);
     public SparkRelativeEncoder m_IntakeLiftMotorEncoder = (SparkRelativeEncoder) m_IntakeLiftMotor.getEncoder();
 
     public IntakeSubsystem() {
         SparkMaxConfig liftConfig =new SparkMaxConfig();
         m_IntakeLiftMotor.configure(liftConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+        m_IntakeMotor.configure(liftConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
     }
 
     @Override
@@ -28,6 +30,7 @@ public class IntakeSubsystem  extends SubsystemBase {
 
     public void setIntakeSpeed(Supplier<Double> speed) {
         SmartDashboard.putNumber("Intake Speed", speed.get());
+        m_IntakeMotor.set(speed.get());
     }
     
     public void setRotate(Supplier<Double> speed){

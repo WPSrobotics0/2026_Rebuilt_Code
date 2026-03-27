@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "JustShootPathRight"
+            "pathName": "justShootCenterPath"
           }
         },
         {
@@ -23,7 +23,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot"
+                  "name": "MidShoot"
                 }
               }
             ]
@@ -36,7 +36,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot"
+                  "name": "MidShoot"
                 }
               }
             ]
@@ -57,7 +57,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "MidShoot"
           }
         }
       ]

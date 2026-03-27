@@ -4,11 +4,14 @@
 
 package frc.robot.subsystems;
 
+import java.util.List;
+
 //import java.util.function.Supplier;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.util.PathPlannerLogging;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 //import com.studica.frc.AHRS.NavXUpdateRate;
@@ -24,7 +27,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
@@ -49,6 +57,8 @@ public class DriveSubsystem extends SubsystemBase {
     private final Translation2d kFrontRightLocation = new Translation2d(kHalfTrackWidthMeters, -kHalfTrackWidthMeters);
     private final Translation2d kBackLeftLocation = new Translation2d(-kHalfTrackWidthMeters, kHalfTrackWidthMeters);
     private final Translation2d kBackRightLocation = new Translation2d(-kHalfTrackWidthMeters, -kHalfTrackWidthMeters);
+
+    private Field2d m_field = new Field2d();
  private SwerveDriveKinematics m_kinematics;
     private SwerveDriveOdometry m_odometry;
 
@@ -57,8 +67,9 @@ public class DriveSubsystem extends SubsystemBase {
     /** Creates a new DriveSubsystem. */
     public DriveSubsystem()
     { 
-    m_navX = new AHRS(NavXComType.kMXP_SPI);
 
+    m_navX = new AHRS(NavXComType.kMXP_SPI);
+    m_navX.reset();
     m_frontLeft= new SwerveModuleCanCoder(1, 21,
                 135.65, "Front Left");
     m_frontRight= new SwerveModuleCanCoder(2, 22,
@@ -108,7 +119,7 @@ public class DriveSubsystem extends SubsystemBase {
         
     }public ChassisSpeeds getRobotRelativeSpeeds()
     {
-        return DriveConstants.kDriveKinematics.toChassisSpeeds(
+        return m_kinematics.toChassisSpeeds(
             m_frontLeft.getSwerveModuleState(),
             m_frontRight.getSwerveModuleState(),
             m_backLeft.getSwerveModuleState(),
@@ -116,7 +127,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 public void resetPose(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(m_navX.getAngle()),
+        getAngle(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -129,7 +140,17 @@ public void resetPose(Pose2d pose) {
         if (m_initalized)
             return;
         resetSteeringMotorsToAbsolute();
-        m_navX.reset();
+        
+        /*var m_trajectory= TrajectoryGenerator.generateTrajectory(new Pose2d(0,0, Rotation2d.fromDegrees(0)), 
+            List.of(new Translation2d(1,1), new Translation2d(2,-1)),
+            new Pose2d(3,0, Rotation2d.fromDegrees(0)),
+            new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0)));
+        */
+        //PathPlannerLogging.setLogActivePathCallback((poses));
+        PathPlannerLogging.setLogActivePathCallback((poses) -> m_field.getObject("path").setPoses(poses));
+
+        SmartDashboard.putData("Field", m_field);
+        //m_field.getObject("traj").setTrajectory(m_trajectory);
     
         m_initalized = true;
     }
@@ -151,11 +172,16 @@ public void resetPose(Pose2d pose) {
         m_frontRight.smartDashboardUpdate();
         m_backLeft.smartDashboardUpdate();
         m_backRight.smartDashboardUpdate();
+
+        
+
     }
     @Override
     public void periodic() {
+        
         m_odometry.update(getAngle(), getPositions());
         smartDashboardUpdate();
+        m_field.setRobotPose(m_odometry.getPoseMeters());
         m_ticks++;
         if (m_ticks % 15 != 7)
             return;

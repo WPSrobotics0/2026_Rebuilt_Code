@@ -27,6 +27,9 @@ import frc.robot.commands.ShootCommand;
 import frc.robot.commands.RotateTurretCommand;
 import frc.robot.commands.IntakeLiftCommand;
 import frc.robot.subsystems.TurretSubsystem;
+
+import java.util.function.Supplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -50,6 +53,8 @@ public class RobotContainer {
   private final ShooterSubsystem m_ShooterSubsystem= new ShooterSubsystem();
   private final TurretSubsystem m_TurretSubsystem = new TurretSubsystem();
   private final Robot m_robot;
+
+  private Supplier<Double> shootSpeed;
   //private final JetsonSubsystem m_JetsonSubsystem = new JetsonSubsystem();
   private TeleOpDriveCommand m_TeleOpDriveCommand;
   private RotateTurretCommand m_RotateTurretCommand;
@@ -71,7 +76,10 @@ public class RobotContainer {
     return new IntakeLiftCommand(m_IntakeSubsystem,()->-0.4).withTimeout(1.0);
   }
   public Command AutoShootCommand(){
-    return new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,.6).withTimeout(4.0);
+    return new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,5000).withTimeout(4.0);
+  }
+  public Command AutoMidShootCommand(){
+    return new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,4850).withTimeout(4.0);
   }
   public Command AutoRotShootCommand(){
     return new RotTurretCommand(m_TurretSubsystem).withTimeout(3.0);
@@ -85,10 +93,12 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer(Robot robot) {
     m_robot = robot;
+    shootSpeed=()->0.6;
 
     NamedCommands.registerCommand("Intake",AutoIntakeCommand());
     NamedCommands.registerCommand("Retract",AutoRetractCommand());
     NamedCommands.registerCommand("Shoot",AutoShootCommand());
+    NamedCommands.registerCommand("MidShoot",AutoMidShootCommand());
     NamedCommands.registerCommand("IntakeLiftDown",AutoIntakeLiftDownCommand());
     NamedCommands.registerCommand("IntakeLiftUp",AutoIntakeLiftUpCommand());
     NamedCommands.registerCommand("RotShoot",AutoRotShootCommand());
@@ -130,14 +140,21 @@ public class RobotContainer {
     //m_subDriverController.leftBumper().whileTrue(
     //     new VisionShootCommand(m_JetsonSubsystem, m_ShooterSubsystem,
     //      m_TurretSubsystem,m_DriveSubsystem));
-     m_subDriverController.a().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> -1.0)));
+     m_subDriverController.a().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> -0.85)));
      m_subDriverController.a().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.0)));
-     m_subDriverController.b().onTrue(new FlipperCommand(m_FeederSubsystem));
+     //m_subDriverController.b().onTrue(new FlipperCommand(m_FeederSubsystem));
+     //m_subDriverController.b().whileTrue(new InstantCommand(() -> m_FeederSubsystem.setFlipperSpeed(1.00)));
+     //m_subDriverController.b().whileFalse(new InstantCommand(() -> m_FeederSubsystem.setFlipperSpeed(0.0)));
+
      m_subDriverController.back().whileTrue(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.5)));
      m_subDriverController.back().whileFalse(new InstantCommand(() -> m_IntakeSubsystem.setIntakeSpeed(() -> 0.0)));
      m_subDriverController.rightBumper().whileTrue(new RotTurretCommand(m_TurretSubsystem));
-     m_subDriverController.rightTrigger().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,0.55));
-     m_subDriverController.y().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,0.5));
+     m_subDriverController.rightTrigger().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,5000));
+     //m_subDriverController.rightTrigger().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,0.625));
+     //m_subDriverController.y().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem,0.55));
+
+     m_subDriverController.y().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem, 4850));
+     m_subDriverController.x().whileTrue(new ShootCommand(m_ShooterSubsystem, m_FeederSubsystem, 5600));
      m_subDriverController.start().whileTrue(new InstantCommand(() -> m_FeederSubsystem.setFeederSpeed(0.2)));
      m_subDriverController.start().onFalse(new InstantCommand(() -> m_FeederSubsystem.setFeederSpeed(0.0)));
  
